@@ -1,0 +1,183 @@
+<mxGraphModel dx="1655" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="2500" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-1" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;startSize=50;fontSize=16;" value="1. CORE SERVICE (core_db)" vertex="1">
+      <mxGeometry height="1610" width="1300" x="40" y="50" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-2" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="users" vertex="1">
+      <mxGeometry height="530" width="380" x="20" y="60" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-3" parent="RGLqNLWbUlsPjn1fDvhJ-2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ email: String (Unique)&#xa;+ password_hash: String&#xa;+ status: String (Index)&#xa;+ deleted_at: null | Date" vertex="1">
+      <mxGeometry height="90" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-4" parent="RGLqNLWbUlsPjn1fDvhJ-2" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="profile: Object&#xa;--&#xa;+ full_name: String&#xa;+ date_of_birth: ISODate&#xa;+ gender: String&#xa;+ height_cm: Integer&#xa;+ weight_kg: Integer&#xa;+ created_at: ISODate&#xa;+ updated_at: ISODate" vertex="1">
+      <mxGeometry height="164" width="380" y="116" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-5" parent="RGLqNLWbUlsPjn1fDvhJ-2" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="privacy_settings: Object&#xa;--&#xa;+ data_sharing: Boolean&#xa;+ marketing_emails: Boolean" vertex="1">
+      <mxGeometry height="70" width="380" y="280" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-6" parent="RGLqNLWbUlsPjn1fDvhJ-2" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="emergency_contacts: List&lt;Object&gt;&#xa;--&#xa;+ name: String&#xa;+ email: String&#xa;+ phone: String&#xa;+ priority: Integer&#xa;+ verified: Boolean" vertex="1">
+      <mxGeometry height="140" width="380" y="350" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-7" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="sessions" vertex="1">
+      <mxGeometry height="260" width="380" x="20" y="610" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-8" parent="RGLqNLWbUlsPjn1fDvhJ-7" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ token_hash: String&#xa;+ created_at: ISODate&#xa;+ expires_at: ISODate (TTL)&#xa;+ revoked: Boolean" vertex="1">
+      <mxGeometry height="114" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-9" parent="RGLqNLWbUlsPjn1fDvhJ-7" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="device_info: Object&#xa;--&#xa;+ user_agent: String&#xa;+ ip_address: String&#xa;+ location: String" vertex="1">
+      <mxGeometry height="110" width="380" y="140" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-10" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="medical_records" vertex="1">
+      <mxGeometry height="680" width="380" x="20" y="890" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-11" parent="RGLqNLWbUlsPjn1fDvhJ-10" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ record_type: String&#xa;+ title: String&#xa;+ clinical_notes: String&#xa;+ icd_codes: List&lt;String&gt;" vertex="1">
+      <mxGeometry height="114" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-12" parent="RGLqNLWbUlsPjn1fDvhJ-10" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="audit_log: Object&#xa;--&#xa;+ created_by: String&#xa;+ last_accessed_at: ISODate&#xa;+ access_count: Integer" vertex="1">
+      <mxGeometry height="74" width="380" y="140" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-13" parent="RGLqNLWbUlsPjn1fDvhJ-10" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="metadata: Object&#xa;--&#xa;+ doctor_name: String&#xa;+ doctor_license: String&#xa;+ clinic: String&#xa;+ clinic_address: String&#xa;+ date: ISODate&#xa;+ next_appointment: ISODate" vertex="1">
+      <mxGeometry height="126" width="380" y="214" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-14" parent="RGLqNLWbUlsPjn1fDvhJ-10" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="files: List&lt;Object&gt;&#xa;--&#xa;+ file_id: ObjectId&#xa;+ filename: String&#xa;+ s3_url: String&#xa;+ file_type: String&#xa;+ size_bytes: Integer&#xa;+ uploaded_at: ISODate&#xa;+ ai_processed: Boolean&#xa;+ ai_analysis_id: ObjectId" vertex="1">
+      <mxGeometry height="170" width="380" y="340" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-15" parent="RGLqNLWbUlsPjn1fDvhJ-10" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="sharing: Object&#xa;--&#xa;+ shared_with: List&lt;{user_id, access}&gt;&#xa;+ requires_consent: Boolean" vertex="1">
+      <mxGeometry height="66" width="380" y="510" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-16" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="prescriptions" vertex="1">
+      <mxGeometry height="360" width="380" x="880" y="570" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-17" parent="RGLqNLWbUlsPjn1fDvhJ-16" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ medical_record_id: ObjectId&#xa;+ prescription_code: String&#xa;+ issued_date: ISODate&#xa;+ expiry_date: ISODate&#xa;+ refills_remaining: Integer&#xa;+ status: String" vertex="1">
+      <mxGeometry height="144" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-18" parent="RGLqNLWbUlsPjn1fDvhJ-16" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="medications: List&lt;Object&gt;&#xa;--&#xa;+ name: String&#xa;+ generic_name: String&#xa;+ dosage: String&#xa;+ frequency: String&#xa;+ route: String&#xa;+ duration_days: Integer&#xa;+ indication: String&#xa;+ side_effects: List&lt;String&gt;" vertex="1">
+      <mxGeometry height="160" width="380" y="170" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-19" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="health_scores" vertex="1">
+      <mxGeometry height="300" width="380" x="440" y="60" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-20" parent="RGLqNLWbUlsPjn1fDvhJ-19" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ date: ISODate (Unique)&#xa;+ bmi: Double&#xa;+ tdee: Integer&#xa;+ calculated_at: ISODate" vertex="1">
+      <mxGeometry height="114" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-21" parent="RGLqNLWbUlsPjn1fDvhJ-19" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="health_score: Object&#xa;--&#xa;+ value: Integer&#xa;+ max: Integer&#xa;+ level: String&#xa;+ activity: Integer&#xa;+ sleep: Integer&#xa;+ hydration: Integer&#xa;+ nutrition: Integer" vertex="1">
+      <mxGeometry height="150" width="380" y="140" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-22" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="meals" vertex="1">
+      <mxGeometry height="420" width="380" x="890" y="60" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-23" parent="RGLqNLWbUlsPjn1fDvhJ-22" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ timestamp: ISODate&#xa;+ meal_type: String&#xa;+ photo_url: String&#xa;+ ai_analysis_id: ObjectId" vertex="1">
+      <mxGeometry height="104" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-24" parent="RGLqNLWbUlsPjn1fDvhJ-22" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="food_items: List&lt;Object&gt;&#xa;--&#xa;+ name: String&#xa;+ quantity_g: Integer&#xa;+ calories: Double&#xa;+ protein_g: Double&#xa;+ fat_g: Double&#xa;+ carbs_g: Double&#xa;+ fiber_g: Double&#xa;+ ai_confidence: Double" vertex="1">
+      <mxGeometry height="160" width="380" y="130" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-25" parent="RGLqNLWbUlsPjn1fDvhJ-22" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="total_nutrition: Object&#xa;--&#xa;+ calories: Double&#xa;+ protein_g: Double&#xa;+ fat_g: Double&#xa;+ carbs_g: Double&#xa;+ fiber_g: Double" vertex="1">
+      <mxGeometry height="120" width="380" y="290" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-26" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="water_intakes" vertex="1">
+      <mxGeometry height="170" width="380" x="440" y="420" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-27" parent="RGLqNLWbUlsPjn1fDvhJ-26" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ timestamp: ISODate&#xa;+ amount_ml: Integer&#xa;+ date: ISODate&#xa;+ total_today_ml: Integer&#xa;+ goal_ml: Integer&#xa;+ progress_percent: Double&#xa;+ adjustment_reason: String" vertex="1">
+      <mxGeometry height="144" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-28" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="sleep_sessions" vertex="1">
+      <mxGeometry height="280" width="380" x="440" y="640" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-29" parent="RGLqNLWbUlsPjn1fDvhJ-28" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ mode: String&#xa;+ bedtime_start: ISODate&#xa;+ wakeup_end: ISODate&#xa;+ duration_hours: Double&#xa;+ efficiency_percent: Integer&#xa;+ source: String (HEALTH_KIT)" vertex="1">
+      <mxGeometry height="134" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-30" parent="RGLqNLWbUlsPjn1fDvhJ-28" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="stages: Object&#xa;--&#xa;+ deep_minutes: Integer&#xa;+ light_minutes: Integer&#xa;+ rem_minutes: Integer&#xa;+ awake_minutes: Integer" vertex="1">
+      <mxGeometry height="74" width="380" y="160" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-31" parent="RGLqNLWbUlsPjn1fDvhJ-28" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="heart_rate: Object&#xa;--&#xa;+ avg: Integer&#xa;+ min: Integer&#xa;+ max: Integer" vertex="1">
+      <mxGeometry height="46" width="380" y="234" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-32" parent="RGLqNLWbUlsPjn1fDvhJ-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="food_database" vertex="1">
+      <mxGeometry height="180" width="380" x="440" y="1000" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-33" parent="RGLqNLWbUlsPjn1fDvhJ-32" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ name: String (Text Index)&#xa;+ brand: String&#xa;+ serving_size_g: Integer&#xa;+ verified: Boolean&#xa;+ source: String" vertex="1">
+      <mxGeometry height="100" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-34" parent="RGLqNLWbUlsPjn1fDvhJ-32" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="nutrition_per_100g: Object&#xa;--&#xa;+ calories: Double&#xa;+ protein_g: Double&#xa;+ fat_g: Double&#xa;+ carbs_g: Double" vertex="1">
+      <mxGeometry height="54" width="380" y="126" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-35" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;startSize=50;fontSize=16;" value="2. IOT SERVICE (iot_db)" vertex="1">
+      <mxGeometry height="1150" width="420" x="1450" y="40" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-36" parent="RGLqNLWbUlsPjn1fDvhJ-35" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="activities" vertex="1">
+      <mxGeometry height="480" width="380" x="20" y="60" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-37" parent="RGLqNLWbUlsPjn1fDvhJ-36" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ activity_type: String&#xa;+ source: String&#xa;+ status: String&#xa;+ start_time: ISODate&#xa;+ end_time: ISODate&#xa;+ duration_sec: Integer&#xa;+ gps_track_id: ObjectId" vertex="1">
+      <mxGeometry height="160" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-38" parent="RGLqNLWbUlsPjn1fDvhJ-36" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="metrics: Object&#xa;--&#xa;+ distance_km: Double&#xa;+ avg_speed_kmh: Double&#xa;+ calories_burned: Integer&#xa;+ elevation_gain_m: Integer&#xa;+ avg_heart_rate: Integer" vertex="1">
+      <mxGeometry height="144" width="380" y="186" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-39" parent="RGLqNLWbUlsPjn1fDvhJ-36" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="manual_data: Object&#xa;--&#xa;+ intensity: String&#xa;+ sets: Integer&#xa;+ reps: Integer&#xa;+ weight_kg: Integer" vertex="1">
+      <mxGeometry height="130" width="380" y="330" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-40" parent="RGLqNLWbUlsPjn1fDvhJ-35" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="gps_tracks" vertex="1">
+      <mxGeometry height="230" width="380" x="20" y="560" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-41" parent="RGLqNLWbUlsPjn1fDvhJ-40" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ activity_id: ObjectId&#xa;+ created_at: ISODate&#xa;+ expires_at: ISODate (TTL 30d)" vertex="1">
+      <mxGeometry height="84" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-42" parent="RGLqNLWbUlsPjn1fDvhJ-40" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="coordinates: List&lt;Object&gt;&#xa;--&#xa;+ lat: Double&#xa;+ lng: Double&#xa;+ timestamp: ISODate&#xa;+ accuracy_m: Double&#xa;+ altitude_m: Double" vertex="1">
+      <mxGeometry height="110" width="380" y="110" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-43" parent="RGLqNLWbUlsPjn1fDvhJ-35" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="daily_steps" vertex="1">
+      <mxGeometry height="170" width="380" x="20" y="810" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-44" parent="RGLqNLWbUlsPjn1fDvhJ-43" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ date: ISODate (Unique)&#xa;+ steps: Integer&#xa;+ source: String&#xa;+ goal_steps: Integer&#xa;+ progress_percent: Double" vertex="1">
+      <mxGeometry height="144" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-45" parent="RGLqNLWbUlsPjn1fDvhJ-35" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="exercise_schedules" vertex="1">
+      <mxGeometry height="130" width="380" x="20" y="1000" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-46" parent="RGLqNLWbUlsPjn1fDvhJ-45" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ title: String&#xa;+ scheduled_time: ISODate&#xa;+ recurrence: String&#xa;+ status: String" vertex="1">
+      <mxGeometry height="100" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-47" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;startSize=50;fontSize=16;" value="3. AI SERVICE (ai_db)" vertex="1">
+      <mxGeometry height="650" width="420" x="2050" y="40" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-48" parent="RGLqNLWbUlsPjn1fDvhJ-47" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="ai_analyses" vertex="1">
+      <mxGeometry height="350" width="380" x="20" y="60" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-49" parent="RGLqNLWbUlsPjn1fDvhJ-48" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ analysis_type: String&#xa;+ source_id: ObjectId&#xa;+ source_collection: String&#xa;+ model_used: String&#xa;+ confidence_threshold: Double&#xa;+ status: String" vertex="1">
+      <mxGeometry height="144" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-50" parent="RGLqNLWbUlsPjn1fDvhJ-48" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="consent_snapshot: Object&#xa;--&#xa;+ granted: Boolean&#xa;+ granted_at: ISODate&#xa;+ scope: List&lt;String&gt;" vertex="1">
+      <mxGeometry height="74" width="380" y="170" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-51" parent="RGLqNLWbUlsPjn1fDvhJ-48" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="results: Object&#xa;--&#xa;+ findings: List&lt;Object&gt;&#xa;+ urgency: String" vertex="1">
+      <mxGeometry height="54" width="380" y="244" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-52" parent="RGLqNLWbUlsPjn1fDvhJ-47" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;collapsible=1;whiteSpace=wrap;html=1;" value="ml_models" vertex="1">
+      <mxGeometry height="200" width="380" x="20" y="430" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-53" parent="RGLqNLWbUlsPjn1fDvhJ-52" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;whiteSpace=wrap;html=1;" value="+ _id: ObjectId&#xa;+ model_name: String&#xa;+ version: String&#xa;+ s3_model_path: String&#xa;+ deployment_status: String" vertex="1">
+      <mxGeometry height="100" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-54" parent="RGLqNLWbUlsPjn1fDvhJ-52" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="performance_metrics: Object&#xa;--&#xa;+ accuracy: Double&#xa;+ precision: Double&#xa;+ recall: Double" vertex="1">
+      <mxGeometry height="70" width="380" y="126" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-55" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;startSize=50;fontSize=16;" value="4. NOTIFICATION SERVICE (notification_db)" vertex="1">
+      <mxGeometry height="400" width="420" x="2680" y="40" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-56" parent="RGLqNLWbUlsPjn1fDvhJ-55" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontalStack=0;startSize=26;fillColor=#ffffff;horizontal=1;html=1;" value="notification_logs" vertex="1">
+      <mxGeometry height="180" width="380" x="20" y="60" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-57" parent="RGLqNLWbUlsPjn1fDvhJ-56" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;" value="+ _id: ObjectId&#xa;+ user_id: ObjectId&#xa;+ type: String (EMAIL, PUSH)&#xa;+ title: String&#xa;+ content: String&#xa;+ status: String (SENT, FAILED)&#xa;+ provider_resp: String&#xa;+ created_at: ISODate" vertex="1">
+      <mxGeometry height="154" width="380" y="26" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-58" parent="RGLqNLWbUlsPjn1fDvhJ-55" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontalStack=0;startSize=26;fillColor=#ffffff;horizontal=1;html=1;" value="notification_templates" vertex="1">
+      <mxGeometry height="100" width="380" x="20" y="260" as="geometry" />
+    </mxCell>
+    <mxCell id="RGLqNLWbUlsPjn1fDvhJ-59" parent="RGLqNLWbUlsPjn1fDvhJ-58" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;" value="+ _id: ObjectId&#xa;+ code: String (WELCOME, ALERT)&#xa;+ subject_template: String&#xa;+ body_template: String" vertex="1">
+      <mxGeometry height="74" width="380" y="26" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>
