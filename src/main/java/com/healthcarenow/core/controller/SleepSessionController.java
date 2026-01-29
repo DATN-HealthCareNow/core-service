@@ -6,6 +6,7 @@ import com.healthcarenow.core.model.mongo.SleepSession;
 import com.healthcarenow.core.service.SleepSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,19 +16,18 @@ public class SleepSessionController {
   private final SleepSessionService sleepSessionService;
 
   @PostMapping("/sync")
-  public ResponseEntity<SleepSession> syncSleep(@RequestHeader("X-User-Id") String userId,
+  public ResponseEntity<SleepSession> syncSleep(@AuthenticationPrincipal String userId,
       @RequestBody SleepSyncRequest request) {
     return ResponseEntity.ok(sleepSessionService.syncSleep(userId, request));
   }
 
   @GetMapping("/analysis")
-  public ResponseEntity<SleepAnalysisDTO> getAnalysis(@RequestHeader("X-User-Id") String userId) {
+  public ResponseEntity<SleepAnalysisDTO> getAnalysis(@AuthenticationPrincipal String userId) {
     return ResponseEntity.ok(sleepSessionService.analyzeSleep(userId));
   }
 
   @PutMapping("/schedule")
-  public ResponseEntity<Void> updateSchedule(@RequestHeader("X-User-Id") String userId) {
-    // Implementation for scheduling (db update) would go here
+  public ResponseEntity<Void> updateSchedule(@AuthenticationPrincipal String userId) {
     return ResponseEntity.ok().build();
   }
 }

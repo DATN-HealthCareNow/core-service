@@ -15,6 +15,7 @@ com\healthcarenow\core\model\mongo\FoodDatabase$NutritionPer100g.class
 com\healthcarenow\core\model\mongo\MedicalRecord$Sharing.class
 com\healthcarenow\core\config\JpaConfig.class
 com\healthcarenow\core\controller\AuthController.class
+com\healthcarenow\core\config\JwtTokenProvider.class
 com\healthcarenow\core\repository\mongo\SleepSessionRepository.class
 com\healthcarenow\core\controller\HealthScoreController.class
 com\healthcarenow\core\repository\jpa\UserRepository.class
@@ -59,6 +60,7 @@ com\healthcarenow\core\model\mongo\FoodDatabase.class
 com\healthcarenow\core\service\MedicalRecordService.class
 com\healthcarenow\core\dto\UpdateProfileRequest.class
 com\healthcarenow\core\model\mongo\Prescription$Medication.class
+com\healthcarenow\core\config\JwtAuthenticationFilter.class
 com\healthcarenow\core\model\mongo\SleepSession$SleepStages.class
 com\healthcarenow\core\repository\mongo\HealthScoreRepository.class
 com\healthcarenow\core\controller\UserController.class
