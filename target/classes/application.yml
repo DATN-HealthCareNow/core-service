@@ -82,3 +82,19 @@ spring:
 
   rabbitmq:
     host: localhost
+
+---
+# Cloud Profile (AWS RDS + Mongo Atlas)
+spring:
+  config:
+    activate:
+      on-profile: cloud
+
+  datasource:
+    url: ${CLOUD_POSTGRES_URL}
+    username: ${CLOUD_POSTGRES_USER}
+    password: ${CLOUD_POSTGRES_PASS}
+
+  data:
+    mongodb:
+      uri: ${CLOUD_MONGO_URI}

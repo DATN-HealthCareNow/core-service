@@ -6,6 +6,7 @@ import com.healthcarenow.core.model.mongo.WaterIntake;
 import com.healthcarenow.core.service.WaterIntakeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,19 +16,18 @@ public class WaterIntakeController {
   private final WaterIntakeService waterIntakeService;
 
   @PostMapping("/log")
-  public ResponseEntity<WaterIntake> logWater(@RequestHeader("X-User-Id") String userId,
+  public ResponseEntity<WaterIntake> logWater(@AuthenticationPrincipal String userId,
       @RequestBody WaterLogRequest request) {
     return ResponseEntity.ok(waterIntakeService.logWater(userId, request.getAmountMl()));
   }
 
   @GetMapping("/progress")
-  public ResponseEntity<WaterProgressDTO> getProgress(@RequestHeader("X-User-Id") String userId) {
+  public ResponseEntity<WaterProgressDTO> getProgress(@AuthenticationPrincipal String userId) {
     return ResponseEntity.ok(waterIntakeService.getProgress(userId));
   }
 
   @PutMapping("/goal")
-  public ResponseEntity<Void> updateGoal(@RequestHeader("X-User-Id") String userId,
-      @RequestBody WaterLogRequest request) { // Reusing DTO for amount
+  public ResponseEntity<Void> updateGoal(@AuthenticationPrincipal String userId, @RequestBody WaterLogRequest request) {
     waterIntakeService.updateGoal(userId, request.getAmountMl());
     return ResponseEntity.ok().build();
   }

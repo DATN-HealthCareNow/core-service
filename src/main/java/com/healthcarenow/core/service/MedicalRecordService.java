@@ -34,6 +34,12 @@ public class MedicalRecordService {
         .collect(Collectors.toList());
   }
 
+  public MedicalRecordDTO getRecord(String id) {
+    return medicalRecordRepository.findById(id)
+        .map(this::mapToDTO)
+        .orElse(null);
+  }
+
   private MedicalRecordDTO mapToDTO(MedicalRecord record) {
     MedicalRecordDTO dto = new MedicalRecordDTO();
     dto.setId(record.getId());

@@ -7,6 +7,7 @@ import com.healthcarenow.core.model.mongo.Meal;
 import com.healthcarenow.core.service.MealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -22,12 +23,12 @@ public class MealController {
   }
 
   @PostMapping("/meals/log")
-  public ResponseEntity<Meal> logMeal(@RequestHeader("X-User-Id") String userId, @RequestBody MealLogRequest request) {
+  public ResponseEntity<Meal> logMeal(@AuthenticationPrincipal String userId, @RequestBody MealLogRequest request) {
     return ResponseEntity.ok(mealService.logMeal(userId, request));
   }
 
   @GetMapping("/meals/macros")
-  public ResponseEntity<MealMacroDTO> getDailyMacros(@RequestHeader("X-User-Id") String userId) {
+  public ResponseEntity<MealMacroDTO> getDailyMacros(@AuthenticationPrincipal String userId) {
     return ResponseEntity.ok(mealService.getDailyMacros(userId));
   }
 }
