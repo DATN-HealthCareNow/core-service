@@ -1,5 +1,6 @@
 com\healthcarenow\core\model\mongo\WaterIntake.class
 com\healthcarenow\core\model\mongo\MedicalRecord$AuditLog.class
+com\healthcarenow\core\repository\mongo\UserRepository.class
 com\healthcarenow\core\config\SecurityConfig.class
 com\healthcarenow\core\dto\AuthResponse.class
 com\healthcarenow\core\repository\mongo\PrescriptionRepository.class
@@ -13,12 +14,10 @@ com\healthcarenow\core\model\mongo\Prescription.class
 com\healthcarenow\core\model\mongo\Session.class
 com\healthcarenow\core\model\mongo\FoodDatabase$NutritionPer100g.class
 com\healthcarenow\core\model\mongo\MedicalRecord$Sharing.class
-com\healthcarenow\core\config\JpaConfig.class
 com\healthcarenow\core\controller\AuthController.class
 com\healthcarenow\core\config\JwtTokenProvider.class
 com\healthcarenow\core\repository\mongo\SleepSessionRepository.class
 com\healthcarenow\core\controller\HealthScoreController.class
-com\healthcarenow\core\repository\jpa\UserRepository.class
 com\healthcarenow\core\dto\MedicalRecordDTO.class
 com\healthcarenow\core\service\AuthService.class
 com\healthcarenow\core\service\SessionService.class
@@ -27,11 +26,9 @@ com\healthcarenow\core\exception\UnauthorizedException.class
 com\healthcarenow\core\service\UserService.class
 com\healthcarenow\core\dto\SleepAnalysisDTO.class
 com\healthcarenow\core\model\mongo\HealthScore$ScoreDetails.class
-com\healthcarenow\core\model\jpa\Role.class
 com\healthcarenow\core\service\WaterIntakeService.class
 com\healthcarenow\core\dto\PrescriptionDTO.class
 com\healthcarenow\core\model\mongo\Session$DeviceInfo.class
-com\healthcarenow\core\model\jpa\User.class
 com\healthcarenow\core\utils\IdUtils.class
 com\healthcarenow\core\model\mongo\PatientProfile$EmergencyContact.class
 com\healthcarenow\core\dto\UserProfileResponse$UserProfileResponseBuilder.class
@@ -42,6 +39,7 @@ com\healthcarenow\core\dto\MealMacroDTO.class
 com\healthcarenow\core\dto\WaterLogRequest.class
 com\healthcarenow\core\dto\WaterProgressDTO.class
 com\healthcarenow\core\model\mongo\Meal.class
+com\healthcarenow\core\model\mongo\Role.class
 com\healthcarenow\core\repository\mongo\MedicalRecordRepository.class
 com\healthcarenow\core\controller\WaterIntakeController.class
 com\healthcarenow\core\dto\SessionDTO.class
@@ -54,6 +52,7 @@ com\healthcarenow\core\exception\BadRequestException.class
 com\healthcarenow\core\model\mongo\PatientProfile$PrivacySettings.class
 com\healthcarenow\core\dto\MealLogRequest.class
 com\healthcarenow\core\dto\AuthRequest.class
+com\healthcarenow\core\model\mongo\User.class
 com\healthcarenow\core\service\HealthScoreService.class
 com\healthcarenow\core\controller\SleepSessionController.class
 com\healthcarenow\core\model\mongo\FoodDatabase.class

@@ -4,19 +4,18 @@ import com.healthcarenow.core.dto.AuthRequest;
 import com.healthcarenow.core.dto.AuthResponse;
 import com.healthcarenow.core.exception.BadRequestException;
 import com.healthcarenow.core.exception.UnauthorizedException;
-import com.healthcarenow.core.model.jpa.Role;
-import com.healthcarenow.core.model.jpa.User;
-import com.healthcarenow.core.model.mongo.PatientProfile;
-import com.healthcarenow.core.model.mongo.Session;
 import com.healthcarenow.core.config.JwtTokenProvider;
-import com.healthcarenow.core.repository.jpa.UserRepository;
+import com.healthcarenow.core.model.mongo.PatientProfile;
+import com.healthcarenow.core.model.mongo.Role;
+import com.healthcarenow.core.model.mongo.Session;
+import com.healthcarenow.core.model.mongo.User;
 import com.healthcarenow.core.repository.mongo.PatientProfileRepository;
 import com.healthcarenow.core.repository.mongo.SessionRepository;
+import com.healthcarenow.core.repository.mongo.UserRepository;
 import com.healthcarenow.core.utils.IdUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +29,6 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final JwtTokenProvider tokenProvider; // Injected
 
-  @Transactional
   public AuthResponse register(AuthRequest request) {
     if (userRepository.existsByEmail(request.getEmail())) {
       throw new BadRequestException("Email already in use");

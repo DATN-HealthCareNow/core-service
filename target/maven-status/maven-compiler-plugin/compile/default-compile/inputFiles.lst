@@ -1,7 +1,6 @@
-D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\config\JpaConfig.java
-D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\jpa\Role.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\repository\mongo\SessionRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\config\MongoConfig.java
+D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\mongo\Role.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\service\HealthScoreService.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\service\WaterIntakeService.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\mongo\Meal.java
@@ -20,7 +19,6 @@ D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcar
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\repository\mongo\MedicalRecordRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\repository\mongo\HealthScoreRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\controller\AuthController.java
-D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\jpa\User.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\controller\SleepSessionController.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\dto\UserProfileResponse.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\service\UserService.java
@@ -28,7 +26,6 @@ D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcar
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\repository\mongo\MealRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\repository\mongo\FoodDatabaseRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\config\JwtAuthenticationFilter.java
-D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\repository\jpa\UserRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\mongo\SleepSession.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\exception\ResourceNotFoundException.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\controller\SessionController.java
@@ -48,11 +45,13 @@ D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcar
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\exception\BadRequestException.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\config\JwtTokenProvider.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\mongo\WaterIntake.java
+D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\repository\mongo\UserRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\dto\WaterLogRequest.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\dto\HealthScoreSummaryDTO.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\controller\MedicalRecordController.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\dto\MedicalRecordDTO.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\config\SecurityConfig.java
+D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\mongo\User.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\mongo\Session.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\controller\WaterIntakeController.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\core-service\src\main\java\com\healthcarenow\core\model\mongo\Prescription.java
