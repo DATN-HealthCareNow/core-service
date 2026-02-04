@@ -3,10 +3,10 @@ package com.healthcarenow.core.service;
 import com.healthcarenow.core.dto.UpdateProfileRequest;
 import com.healthcarenow.core.dto.UserProfileResponse;
 import com.healthcarenow.core.exception.ResourceNotFoundException;
-import com.healthcarenow.core.model.jpa.User;
 import com.healthcarenow.core.model.mongo.PatientProfile;
-import com.healthcarenow.core.repository.jpa.UserRepository;
+import com.healthcarenow.core.model.mongo.User;
 import com.healthcarenow.core.repository.mongo.PatientProfileRepository;
+import com.healthcarenow.core.repository.mongo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
