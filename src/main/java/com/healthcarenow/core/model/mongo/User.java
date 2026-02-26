@@ -25,6 +25,8 @@ public class User {
 
   private String status; // ACTIVE, SUSPENDED, DELETED
 
+  private String deviceToken;
+
   private LocalDateTime deletedAt;
 
   @CreatedDate

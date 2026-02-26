@@ -26,6 +26,7 @@ com\healthcarenow\core\exception\UnauthorizedException.class
 com\healthcarenow\core\service\UserService.class
 com\healthcarenow\core\dto\SleepAnalysisDTO.class
 com\healthcarenow\core\model\mongo\HealthScore$ScoreDetails.class
+com\healthcarenow\core\dto\UserContactResponse$UserContactResponseBuilder.class
 com\healthcarenow\core\service\WaterIntakeService.class
 com\healthcarenow\core\dto\PrescriptionDTO.class
 com\healthcarenow\core\model\mongo\Session$DeviceInfo.class
@@ -36,11 +37,13 @@ com\healthcarenow\core\exception\ResourceNotFoundException.class
 com\healthcarenow\core\controller\MealController.class
 com\healthcarenow\core\model\mongo\Meal$FoodItem.class
 com\healthcarenow\core\dto\MealMacroDTO.class
+com\healthcarenow\core\dto\DeviceTokenRequest.class
 com\healthcarenow\core\dto\WaterLogRequest.class
 com\healthcarenow\core\dto\WaterProgressDTO.class
 com\healthcarenow\core\model\mongo\Meal.class
 com\healthcarenow\core\model\mongo\Role.class
 com\healthcarenow\core\repository\mongo\MedicalRecordRepository.class
+com\healthcarenow\core\dto\UserContactResponse.class
 com\healthcarenow\core\controller\WaterIntakeController.class
 com\healthcarenow\core\dto\SessionDTO.class
 com\healthcarenow\core\controller\PrescriptionController.class
@@ -48,6 +51,7 @@ com\healthcarenow\core\dto\SleepAnalysisDTO$SleepAnalysisDTOBuilder.class
 com\healthcarenow\core\service\PrescriptionService.class
 com\healthcarenow\core\controller\SessionController.class
 com\healthcarenow\core\model\mongo\MedicalRecord.class
+com\healthcarenow\core\config\RedisConfig.class
 com\healthcarenow\core\exception\BadRequestException.class
 com\healthcarenow\core\model\mongo\PatientProfile$PrivacySettings.class
 com\healthcarenow\core\dto\MealLogRequest.class
@@ -57,6 +61,7 @@ com\healthcarenow\core\service\HealthScoreService.class
 com\healthcarenow\core\controller\SleepSessionController.class
 com\healthcarenow\core\model\mongo\FoodDatabase.class
 com\healthcarenow\core\service\MedicalRecordService.class
+com\healthcarenow\core\controller\InternalUserController.class
 com\healthcarenow\core\dto\UpdateProfileRequest.class
 com\healthcarenow\core\model\mongo\Prescription$Medication.class
 com\healthcarenow\core\config\JwtAuthenticationFilter.class

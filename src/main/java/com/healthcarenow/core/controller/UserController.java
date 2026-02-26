@@ -1,5 +1,6 @@
 package com.healthcarenow.core.controller;
 
+import com.healthcarenow.core.dto.DeviceTokenRequest;
 import com.healthcarenow.core.dto.UpdateProfileRequest;
 import com.healthcarenow.core.dto.UserProfileResponse;
 import com.healthcarenow.core.service.UserService;
@@ -27,5 +28,13 @@ public class UserController {
       @RequestBody UpdateProfileRequest request) {
 
     return ResponseEntity.ok(userService.updateProfile(userId, request));
+  }
+
+  @PostMapping("/device-token")
+  public ResponseEntity<Void> updateDeviceToken(
+      @AuthenticationPrincipal String userId,
+      @RequestBody DeviceTokenRequest request) {
+    userService.updateDeviceToken(userId, request.getDeviceToken());
+    return ResponseEntity.ok().build();
   }
 }

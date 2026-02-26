@@ -1,14 +1,19 @@
 package com.healthcarenow.core.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
 import com.healthcarenow.core.dto.UpdateProfileRequest;
 import com.healthcarenow.core.dto.UserProfileResponse;
+import com.healthcarenow.core.dto.UserContactResponse;
 import com.healthcarenow.core.exception.ResourceNotFoundException;
 import com.healthcarenow.core.model.mongo.PatientProfile;
 import com.healthcarenow.core.model.mongo.User;
 import com.healthcarenow.core.repository.mongo.PatientProfileRepository;
 import com.healthcarenow.core.repository.mongo.UserRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final PatientProfileRepository patientProfileRepository;
 
+  @Cacheable(value = "user_profiles", key = "#userId")
   public UserProfileResponse getProfile(String userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -36,6 +42,7 @@ public class UserService {
         .build();
   }
 
+  @CacheEvict(value = "user_profiles", key = "#userId")
   public UserProfileResponse updateProfile(String userId, UpdateProfileRequest request) {
     PatientProfile profile = patientProfileRepository.findByUserId(userId)
         .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
@@ -54,5 +61,28 @@ public class UserService {
     patientProfileRepository.save(profile);
 
     return getProfile(userId);
+  }
+
+  public void updateDeviceToken(String userId, String deviceToken) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    user.setDeviceToken(deviceToken);
+    userRepository.save(user);
+  }
+
+  public void removeDeviceToken(String userId) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    user.setDeviceToken(null);
+    userRepository.save(user);
+  }
+
+  public UserContactResponse getContactInfo(String userId) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    return UserContactResponse.builder()
+        .email(user.getEmail())
+        .deviceToken(user.getDeviceToken())
+        .build();
   }
 }
