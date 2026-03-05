@@ -67,7 +67,7 @@ public class MealService {
     }
 
     return MealMacroDTO.builder()
-        .totalCalories(cals)
+        .calories(cals)
         .proteinG(pro)
         .fatG(fat)
         .carbsG(carbs)

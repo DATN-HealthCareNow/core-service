@@ -70,7 +70,6 @@ com\healthcarenow\core\repository\mongo\HealthScoreRepository.class
 com\healthcarenow\core\controller\UserController.class
 com\healthcarenow\core\model\mongo\SleepSession.class
 com\healthcarenow\core\model\mongo\PatientProfile.class
-com\healthcarenow\core\service\MealService.class
 com\healthcarenow\core\config\MongoConfig.class
 com\healthcarenow\core\CoreServiceApplication.class
 com\healthcarenow\core\model\mongo\MedicalRecord$Metadata.class

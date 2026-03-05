@@ -24,7 +24,7 @@ public class HealthScoreService {
     HealthScoreSummaryDTO dto = new HealthScoreSummaryDTO();
     dto.setBmi(score.getBmi());
     dto.setTdee(score.getTdee());
-    dto.setDailyScore(score.getHealthScore());
+    dto.setHealthScore(score.getHealthScore());
     return dto;
   }
 

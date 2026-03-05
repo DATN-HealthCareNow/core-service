@@ -6,6 +6,7 @@ D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\dto\UserContactResponse.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\config\SecurityConfig.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\controller\HealthScoreController.java
+D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\config\RabbitMQConfig.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\service\SessionService.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\service\HealthScoreService.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\repository\mongo\MedicalRecordRepository.java
@@ -59,8 +60,10 @@ D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\repository\mongo\SessionRepository.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\service\MealService.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\config\RedisConfig.java
+D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\dto\NotificationEvent.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\dto\WaterLogRequest.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\service\WaterIntakeService.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\dto\AuthRequest.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\controller\AuthController.java
+D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\service\NotificationProducer.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\model\mongo\WaterIntake.java
