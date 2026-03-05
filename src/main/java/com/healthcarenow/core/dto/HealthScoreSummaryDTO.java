@@ -7,5 +7,5 @@ import lombok.Data;
 public class HealthScoreSummaryDTO {
   private Double bmi;
   private Integer tdee;
-  private HealthScore.ScoreDetails dailyScore;
+  private HealthScore.ScoreDetails healthScore;
 }

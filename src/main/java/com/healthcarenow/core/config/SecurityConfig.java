@@ -23,6 +23,7 @@ public class SecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/v1/internal/**").permitAll() // Internal API
             .requestMatchers("/api/v1/auth/**").permitAll() // Must match exactly
             .requestMatchers("/error").permitAll() // Allow error page
             .anyRequest().authenticated())
