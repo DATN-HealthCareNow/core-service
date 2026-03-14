@@ -55,6 +55,7 @@ D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\config\JwtAuthenticationFilter.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\controller\UserController.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\repository\mongo\PatientProfileRepository.java
+D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\service\S3Service.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\model\mongo\Session.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\dto\MealMacroDTO.java
 D:\Quan_Ly_Mon_Hoc\Khoa_Luan_Tot_Nghiep\HealthCareNow\core-service\src\main\java\com\healthcarenow\core\repository\mongo\SessionRepository.java

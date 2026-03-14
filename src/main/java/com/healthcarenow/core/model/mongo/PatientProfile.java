@@ -25,6 +25,8 @@ public class PatientProfile {
   private Integer heightCm;
   private Integer weightKg;
 
+  private String avatarUrl;
+
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
