@@ -37,4 +37,11 @@ public class UserController {
     userService.updateDeviceToken(userId, request.getDeviceToken());
     return ResponseEntity.ok().build();
   }
+
+  @PostMapping(value = "/avatar", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<String> updateAvatar(
+      @AuthenticationPrincipal String userId,
+      @RequestParam("file") org.springframework.web.multipart.MultipartFile file) {
+    return ResponseEntity.ok(userService.updateAvatar(userId, file));
+  }
 }

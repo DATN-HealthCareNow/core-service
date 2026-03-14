@@ -34,7 +34,7 @@ public class AuthService {
       throw new BadRequestException("Email already in use");
     }
 
-    // 1. Create User (Postgres)
+    // 1. Create User (Mongo)
     User user = new User();
     user.setId(IdUtils.generateId());
     user.setEmail(request.getEmail());
