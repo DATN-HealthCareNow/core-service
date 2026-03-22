@@ -1,4 +1,4 @@
-package com.healthcarenow.core.service;
+﻿package com.healthcarenow.core.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,10 +25,10 @@ public class S3Service {
   @Value("${SECRET_KEY}")
   private String secretKey;
 
-  @Value("${AWS_REGION:ap-southeast-1}")
+  @Value("${aws.region:ap-southeast-2}")
   private String region;
 
-  @Value("${AWS_S3_BUCKET:healthcare-now-avatars}")
+  @Value("${aws.s3.bucket:healthcare-now-avatars-syd}")
   private String bucketName;
 
   private S3Client s3Client;
