@@ -36,9 +36,9 @@ public class S3Service {
   @PostConstruct
   public void init() {
     this.s3Client = S3Client.builder()
-        .region(Region.of(region))
+        .region(Region.of(region.trim()))
         .credentialsProvider(StaticCredentialsProvider.create(
-            AwsBasicCredentials.create(accessKey, secretKey)))
+            AwsBasicCredentials.create(accessKey.trim(), secretKey.trim())))
         .build();
   }
 
