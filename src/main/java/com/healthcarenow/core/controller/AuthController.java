@@ -36,16 +36,21 @@ public class AuthController {
 
   @GetMapping("/validate")
   public ResponseEntity<Void> validateToken(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
-    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-      String token = bearerToken.substring(7);
-      if (tokenProvider.validateToken(token)) {
-        String userId = tokenProvider.getUserIdFromJWT(token);
-        return ResponseEntity.ok()
-            .header("x-user-id", userId)
-            .build();
+    try {
+      String bearerToken = request.getHeader("Authorization");
+      if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        String token = bearerToken.substring(7);
+        if (tokenProvider.validateToken(token)) {
+          String userId = tokenProvider.getUserIdFromJWT(token);
+          return ResponseEntity.ok()
+              .header("x-user-id", userId)
+              .build();
+        }
       }
+      return ResponseEntity.status(401).build();
+    } catch (Exception ex) {
+      // Any JWT exception (SignatureException, MalformedJwtException, etc.) should result in 401
+      return ResponseEntity.status(401).build();
     }
-    return ResponseEntity.status(401).build();
   }
 }

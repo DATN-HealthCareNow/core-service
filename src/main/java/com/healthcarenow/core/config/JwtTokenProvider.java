@@ -13,10 +13,12 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenProvider {
 
-  // Should be in application.yml, but hardcoded for now for simplicity
   // MUST be >= 512 bits for HS512 (approx 64 chars)
-  private final String jwtSecret = "CongDanhDepTraiVipproSecretKey1234567890@!!!CongDanhDepTraiVipproSecretKey1234567890@!!!CongDanhDepTraiVipproSecretKey1234567890@!!!";
-  private final long jwtExpirationInMs = 604800000L; // 7 days
+  @Value("${jwt.secret:CongDanhDepTraiVipproSecretKey1234567890@!!!CongDanhDepTraiVipproSecretKey1234567890@!!!CongDanhDepTraiVipproSecretKey1234567890@!!!}")
+  private String jwtSecret;
+  
+  @Value("${jwt.expiration.ms:604800000}")
+  private long jwtExpirationInMs; // 7 days default
 
   private Key getSigningKey() {
     return Keys.hmacShaKeyFor(jwtSecret.getBytes());
