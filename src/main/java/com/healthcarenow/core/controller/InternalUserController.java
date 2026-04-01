@@ -3,6 +3,7 @@ package com.healthcarenow.core.controller;
 import com.healthcarenow.core.dto.UserContactResponse;
 import com.healthcarenow.core.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class InternalUserController {
 
   private final UserService userService;
-
-  // Simple static token for internal communication to prevent external access
-  // In production, NGINX is configured to block /api/v1/internal/* from outside
-  private static final String INTERNAL_API_TOKEN = "hcn-internal-secret-2024";
+  
+  @Value("${app.internal-token:hcn-internal-secret-2024}")
+  private String internalApiToken;
 
   private void validateInternalToken(String token) {
-    if (token == null || !token.equals(INTERNAL_API_TOKEN)) {
+    if (token == null || !token.equals(internalApiToken)) {
       throw new org.springframework.web.server.ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Internal Token");
     }
   }
