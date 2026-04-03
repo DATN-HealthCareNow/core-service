@@ -40,4 +40,14 @@ public class WaterIntakeController {
     waterIntakeService.updateGoal(userId, request.getAmountMl());
     return ResponseEntity.ok().build();
   }
+
+  @GetMapping("/internal/{userId}/progress")
+  public ResponseEntity<WaterProgressDTO> getInternalProgress(
+      @PathVariable("userId") String userId,
+      @RequestHeader(value = "X-Internal-Token", required = false) String token) {
+    if (!"hcn-internal-secret-2024".equals(token)) {
+      return ResponseEntity.status(401).build();
+    }
+    return ResponseEntity.ok(waterIntakeService.getProgress(userId));
+  }
 }

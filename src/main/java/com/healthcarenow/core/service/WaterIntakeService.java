@@ -29,8 +29,11 @@ public class WaterIntakeService {
 
   public void handleWaterLoggedEvent(String userId, Integer amountMl, String dateString) {
       LocalDate date = LocalDate.parse(dateString);
-      List<WaterIntake> logs = waterIntakeRepository.findByUserIdAndDate(userId, date);
-      WaterIntake intake = logs.isEmpty() ? getTodayWaterIntake(userId) : logs.get(0);
+      WaterIntake intake = waterIntakeRepository.findFirstByUserIdAndDateOrderByTimestampDesc(userId, date);
+      if (intake == null) {
+          intake = getTodayWaterIntake(userId);
+          intake.setDate(date);
+      }
       
       int currentTotal = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
       intake.setTotalTodayMl(currentTotal + amountMl);
