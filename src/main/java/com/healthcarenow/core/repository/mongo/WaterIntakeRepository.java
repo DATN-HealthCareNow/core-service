@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface WaterIntakeRepository extends MongoRepository<WaterIntake, String> {
   List<WaterIntake> findByUserIdAndDate(String userId, LocalDate date);
+
+  WaterIntake findFirstByUserIdAndDateOrderByTimestampDesc(String userId, LocalDate date);
 }
