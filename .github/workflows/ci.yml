@@ -50,6 +50,10 @@ jobs:
           cache: 'maven'
 
       - name: 🧪 Run Unit Tests
+        env:
+          ACCESS_KEY: test-dummy-access-key
+          SECRET_KEY: test-dummy-secret-key
+          AWS_REGION: ap-southeast-1
         run: mvn test --batch-mode --fail-at-end
 
       - name: 📦 Build with Maven
