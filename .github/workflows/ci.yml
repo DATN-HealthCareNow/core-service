@@ -23,12 +23,20 @@ jobs:
     name: 🏗️ Build & Push
     runs-on: ubuntu-latest
     
-    # Khởi tạo một database MongoDB phụ trợ độc lập cho việc Unit Test
+    # Khởi tạo các dịch vụ nền tảng (MongoDB, Redis, RabbitMQ) để phục vụ Unit Test
     services:
       mongodb:
         image: mongo:latest
         ports:
           - 27017:27017
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+      rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+          - 5672:5672
 
     steps:
       - name: 📥 Checkout source code
@@ -42,6 +50,10 @@ jobs:
           cache: 'maven'
 
       - name: 🧪 Run Unit Tests
+        env:
+          ACCESS_KEY: test-dummy-access-key
+          SECRET_KEY: test-dummy-secret-key
+          AWS_REGION: ap-southeast-1
         run: mvn test --batch-mode --fail-at-end
 
       - name: 📦 Build with Maven
