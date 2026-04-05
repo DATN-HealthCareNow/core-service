@@ -75,16 +75,38 @@ jobs:
         
       - name: 🚀 Build & Push Docker Image to ECR
         uses: docker/build-push-action@v5
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.SERVICE_NAME }}
-          IMAGE_TAG: ${{ github.sha }}
         with:
           context: .
           file: ./Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: |
-            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
-            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.SERVICE_NAME }}:latest
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy-to-ec2:
+    needs: build-and-push # Đợi job CI làm xong mới chạy job Deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # (Tùy chọn) Chỉ tự động deploy khi có code lên nhánh main
+    steps:
+      - name: 🚀 CD - Push code to Production Server (EC2)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            echo "1. Đăng nhập vào AWS ECR..."
+            aws ecr get-login-password --region ap-southeast-1 | sudo docker login --username AWS --password-stdin 632469639580.dkr.ecr.ap-southeast-1.amazonaws.com
+            
+            echo "2. Kéo (Pull) image mới nhất về từ ECR..."
+            sudo docker pull 632469639580.dkr.ecr.ap-southeast-1.amazonaws.com/healthcare-core-service:latest
+            
+            echo "3. Cập nhật và khởi động lại core-service..."
+            # Di chuyển vào thư mục cấu hình devops-service trên EC2 (Bạn nhớ đổi đúng tên thư mục chứa docker-compose.yml nếu khác)
+            cd ~/devops-service
+            sudo docker compose up -d core-service
+            
+            echo "4. Dọn dẹp các Image cũ để tránh đầy ổ cứng server..."
+            sudo docker image prune -f
