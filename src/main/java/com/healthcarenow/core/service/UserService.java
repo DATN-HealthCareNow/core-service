@@ -27,7 +27,6 @@ public class UserService {
 
     PatientProfile profile = patientProfileRepository.findByUserId(userId)
         .orElseGet(() -> {
-          // Fallback: create profile if missing
           PatientProfile newProfile = new PatientProfile();
           newProfile.setId(userId);
           newProfile.setUserId(userId);
