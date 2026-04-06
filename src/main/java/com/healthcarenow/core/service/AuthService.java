@@ -16,8 +16,14 @@ import com.healthcarenow.core.utils.IdUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +75,50 @@ public class AuthService {
     }
 
     return createSession(user);
+  }
+
+  public AuthResponse googleLogin(AuthRequest request) {
+    try {
+      GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+          .build();
+
+      GoogleIdToken idToken = verifier.verify(request.getIdToken());
+      if (idToken != null) {
+          GoogleIdToken.Payload payload = idToken.getPayload();
+          String email = payload.getEmail();
+          String name = (String) payload.get("name");
+          if (name == null || name.isEmpty()) {
+              name = "User";
+          }
+
+          User user = userRepository.findByEmail(email).orElse(null);
+          if (user == null) {
+              user = new User();
+              user.setId(IdUtils.generateId());
+              user.setEmail(email);
+              user.setPasswordHash(passwordEncoder.encode(IdUtils.generateId())); // Random pass
+              user.setRole(Role.USER);
+              user.setStatus("ACTIVE");
+              userRepository.save(user);
+
+              PatientProfile profile = new PatientProfile();
+              profile.setId(user.getId());
+              profile.setUserId(user.getId());
+              profile.setFullName(name);
+              profile.setCreatedAt(LocalDateTime.now());
+              profile.setUpdatedAt(LocalDateTime.now());
+              PatientProfile.PrivacySettings settings = new PatientProfile.PrivacySettings();
+              settings.setDataSharing(true);
+              profile.setPrivacySettings(settings);
+              patientProfileRepository.save(profile);
+          }
+          return createSession(user);
+      } else {
+          throw new UnauthorizedException("Invalid Google token");
+      }
+    } catch (Exception e) {
+      throw new UnauthorizedException("Google Auth Failed: " + e.getMessage());
+    }
   }
 
   private AuthResponse createSession(User user) {
