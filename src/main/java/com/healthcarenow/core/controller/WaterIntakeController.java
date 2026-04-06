@@ -17,16 +17,15 @@ public class WaterIntakeController {
 
   @GetMapping("/today")
   public ResponseEntity<WaterIntake> getTodayWaterIntake(@AuthenticationPrincipal String userId) {
-      if (userId == null) {
-          return ResponseEntity.status(401).build();
-      }
-      return ResponseEntity.ok(waterIntakeService.getTodayWaterIntake(userId));
+    if (userId == null) {
+      return ResponseEntity.status(401).build();
+    }
+    return ResponseEntity.ok(waterIntakeService.getTodayWaterIntake(userId));
   }
 
   @PostMapping("/log")
   public ResponseEntity<WaterIntake> logWater(@AuthenticationPrincipal String userId,
-                                              @RequestBody WaterLogRequest request) {
-    // keeping old method just in case, but probably not used if coming through rabbitmq
+      @RequestBody WaterLogRequest request) {
     return ResponseEntity.ok(waterIntakeService.logWater(userId, request.getAmountMl()));
   }
 
