@@ -28,6 +28,14 @@ public class AuthController {
     return ResponseEntity.ok(authService.login(request));
   }
 
+  @PostMapping("/google")
+  public ResponseEntity<AuthResponse> googleLogin(@RequestBody AuthRequest request) {
+    if (!StringUtils.hasText(request.getIdToken())) {
+        return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok(authService.googleLogin(request));
+  }
+
   @DeleteMapping("/logout")
   public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
     // authService.logout(token);
