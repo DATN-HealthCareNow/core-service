@@ -25,8 +25,14 @@ public class PatientProfile {
   private Integer heightCm;
   private Integer weightKg;
 
+  private String avatarUrl;
+
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+
+  private LocationInfo lastKnownLocation;
+  private String activeStatus; // e.g., "ONLINE", "OFFLINE"
+  private LocalDateTime lastActiveAt;
 
   private List<EmergencyContact> emergencyContacts;
 
@@ -38,6 +44,13 @@ public class PatientProfile {
     private String email;
     private String phone;
     private Integer priority;
+  }
+
+  @Data
+  public static class LocationInfo {
+    private Double lat;
+    private Double lng;
+    private LocalDateTime updatedAt;
   }
 
   @Data

@@ -4,6 +4,7 @@ import com.healthcarenow.core.dto.SessionDTO;
 import com.healthcarenow.core.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class SessionController {
   private final SessionService sessionService;
 
   @GetMapping("/active")
-  public ResponseEntity<List<SessionDTO>> getActiveSessions(@RequestHeader("X-User-Id") String userId) {
+  public ResponseEntity<List<SessionDTO>> getActiveSessions(@AuthenticationPrincipal String userId) {
     return ResponseEntity.ok(sessionService.getActiveSessions(userId));
   }
 

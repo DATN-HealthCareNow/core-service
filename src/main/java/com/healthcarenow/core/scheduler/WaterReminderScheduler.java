@@ -2,8 +2,8 @@ package com.healthcarenow.core.scheduler;
 
 import com.healthcarenow.core.config.RabbitMQConfig;
 import com.healthcarenow.core.dto.NotificationEvent;
-import com.healthcarenow.core.model.jpa.User;
-import com.healthcarenow.core.repository.jpa.UserRepository;
+import com.healthcarenow.core.model.mongo.User;
+import com.healthcarenow.core.repository.mongo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -29,7 +29,7 @@ public class WaterReminderScheduler {
 
     for (User user : activeUsers) {
       try {
-        Map<String, String> payload = new HashMap<>();
+        Map<String, Object> payload = new HashMap<>();
         payload.put("title", "Đã đến giờ uống nước!");
         payload.put("body", "Hãy uống một cốc nước để duy trì sức khỏe nhé!");
         payload.put("language", "vi");

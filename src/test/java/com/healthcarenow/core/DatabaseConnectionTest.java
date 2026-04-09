@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,17 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DatabaseConnectionTest {
 
   @Autowired
-  private JdbcTemplate jdbcTemplate;
-
-  @Autowired
   private MongoTemplate mongoTemplate;
-
-  @Test
-  void testPostgresConnection() {
-    Integer result = jdbcTemplate.queryForObject("SELECT 1", Integer.class);
-    assertThat(result).isEqualTo(1);
-    System.out.println("✅ Kết nối Postgres thành công!");
-  }
 
   @Test
   void testMongoConnection() {

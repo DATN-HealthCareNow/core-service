@@ -4,6 +4,7 @@ import com.healthcarenow.core.dto.PrescriptionDTO;
 import com.healthcarenow.core.service.PrescriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class PrescriptionController {
   private final PrescriptionService prescriptionService;
 
   @GetMapping
-  public ResponseEntity<List<PrescriptionDTO>> getActivePrescriptions(@RequestHeader("X-User-Id") String userId) {
+  public ResponseEntity<List<PrescriptionDTO>> getActivePrescriptions(@AuthenticationPrincipal String userId) {
     return ResponseEntity.ok(prescriptionService.getActivePrescriptions(userId));
   }
 

@@ -12,8 +12,17 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationEvent {
+
+  // Type of event, e.g., EMERGENCY_FALL, MEDICAL_REMINDER
   private String eventType;
+
+  // Target user
   private String userId;
+
+  // Priority: HIGH, NORMAL, LOW
   private String priority;
-  private Map<String, String> payload;
+
+  // Additional parameters like {name}, {location}, or fallback email/token
+  private Map<String, Object> payload;
+
 }

@@ -6,5 +6,8 @@ import lombok.Data;
 public class AuthRequest {
   private String email;
   private String password;
-  private String fullName; // Optional for login
+  @com.fasterxml.jackson.annotation.JsonProperty("full_name")
+  private String fullName;
+
+  private String idToken;
 }
