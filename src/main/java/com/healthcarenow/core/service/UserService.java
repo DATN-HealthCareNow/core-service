@@ -127,4 +127,31 @@ public class UserService {
         .deviceToken(user.getDeviceToken())
         .build();
   }
+
+  public void updateTracking(String userId, com.healthcarenow.core.dto.TrackingRequest request) {
+    PatientProfile profile = patientProfileRepository.findByUserId(userId)
+        .orElseGet(() -> {
+          PatientProfile newProfile = new PatientProfile();
+          newProfile.setUserId(userId);
+          newProfile.setId(userId);
+          newProfile.setCreatedAt(java.time.LocalDateTime.now());
+          return newProfile;
+        });
+
+    if (request.getStatus() != null) {
+        profile.setActiveStatus(request.getStatus());
+    }
+    
+    if (request.getLat() != null && request.getLng() != null) {
+        PatientProfile.LocationInfo loc = new PatientProfile.LocationInfo();
+        loc.setLat(request.getLat());
+        loc.setLng(request.getLng());
+        loc.setUpdatedAt(java.time.LocalDateTime.now());
+        profile.setLastKnownLocation(loc);
+    }
+    
+    profile.setLastActiveAt(java.time.LocalDateTime.now());
+    profile.setUpdatedAt(java.time.LocalDateTime.now());
+    patientProfileRepository.save(profile);
+  }
 }
