@@ -97,12 +97,14 @@ public class WaterIntakeService {
       PatientProfile profile = patientProfileRepository.findByUserId(userId).orElse(null);
       int weightKg = (profile != null && profile.getWeightKg() != null) ? profile.getWeightKg() : 65;
       
-      int goalMl = (weightKg * 35);
-      if (temperature > 30) {
+      double weightLbs = weightKg / 0.45359237;
+      double baseOz = weightLbs * 0.5;
+      double exerciseOz = (avgExerciseMinutes / 30.0) * 12.0;
+      double totalOz = baseOz + exerciseOz;
+      int goalMl = (int) Math.round(totalOz * 29.5735296);
+      
+      if (temperature > 30.0) {
           goalMl += 500;
-      }
-      if (avgExerciseMinutes > 30) {
-          goalMl += 350;
       }
       
       newIntake.setGoalMl(goalMl);

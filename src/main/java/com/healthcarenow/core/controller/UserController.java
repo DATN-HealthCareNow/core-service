@@ -44,4 +44,12 @@ public class UserController {
       @RequestParam("file") org.springframework.web.multipart.MultipartFile file) {
     return ResponseEntity.ok(userService.updateAvatar(userId, file));
   }
+
+  @PostMapping("/tracking")
+  public ResponseEntity<Void> updateTracking(
+      @AuthenticationPrincipal String userId,
+      @RequestBody com.healthcarenow.core.dto.TrackingRequest request) {
+    userService.updateTracking(userId, request);
+    return ResponseEntity.ok().build();
+  }
 }

@@ -2,6 +2,10 @@ package com.healthcarenow.core.controller;
 
 import com.healthcarenow.core.dto.AuthRequest;
 import com.healthcarenow.core.dto.AuthResponse;
+import com.healthcarenow.core.dto.ChangePasswordConfirmRequest;
+import com.healthcarenow.core.dto.ChangePasswordRequest;
+import com.healthcarenow.core.dto.ForgotPasswordConfirmRequest;
+import com.healthcarenow.core.dto.ForgotPasswordRequest;
 import com.healthcarenow.core.service.AuthService;
 import com.healthcarenow.core.config.JwtTokenProvider;
 import org.springframework.util.StringUtils;
@@ -34,6 +38,34 @@ public class AuthController {
         return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok(authService.googleLogin(request));
+  }
+
+  @PostMapping("/forgot-password/request-otp")
+  public ResponseEntity<Void> requestForgotPasswordOtp(@RequestBody ForgotPasswordRequest request) {
+    authService.requestForgotPasswordOtp(request.getEmail());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/forgot-password/confirm")
+  public ResponseEntity<Void> confirmForgotPassword(@RequestBody ForgotPasswordConfirmRequest request) {
+    authService.confirmForgotPassword(request.getEmail(), request.getOtp(), request.getNewPassword());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/change-password/request-otp")
+  public ResponseEntity<Void> requestChangePasswordOtp(@RequestBody ChangePasswordRequest request) {
+    authService.requestChangePasswordOtp(request.getEmail(), request.getCurrentPassword());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/change-password/confirm")
+  public ResponseEntity<Void> confirmChangePassword(@RequestBody ChangePasswordConfirmRequest request) {
+    authService.confirmChangePassword(
+        request.getEmail(),
+        request.getCurrentPassword(),
+        request.getOtp(),
+        request.getNewPassword());
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/logout")
