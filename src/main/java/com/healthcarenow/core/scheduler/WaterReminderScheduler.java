@@ -22,11 +22,7 @@ public class WaterReminderScheduler {
   private final UserRepository userRepository;
   private final RabbitTemplate rabbitTemplate;
 
-  // Run at 07:00, 12:00, and 18:00 every day in Vietnam timezone
-  @Scheduled(
-      cron = "0 0 7,12,18 * * ?",
-      zone = "Asia/Ho_Chi_Minh"
-  )
+  @Scheduled(cron = "0 0 7,12,18 * * ?", zone = "Asia/Ho_Chi_Minh")
   public void triggerWaterReminders() {
     log.info("[WATER_REMINDER] Starting to send water reminders to active users...");
     List<User> activeUsers = userRepository.findByStatus("ACTIVE");
@@ -51,7 +47,7 @@ public class WaterReminderScheduler {
         log.error("Failed to send water reminder for user {}: {}", user.getId(), e.getMessage());
       }
     }
-    
+
     log.info("[WATER_REMINDER] Finished sending water reminders. Count={}", activeUsers.size());
   }
 }
