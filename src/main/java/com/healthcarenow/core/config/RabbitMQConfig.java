@@ -7,6 +7,7 @@ import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ public class RabbitMQConfig {
   public static final String EXCHANGE_NAME = "healthcare.events";
   public static final String DLX_NAME = "healthcare.events.dlx";
   public static final String WATER_LOGGING_QUEUE = "water.logging.queue";
+  public static final String NOTIFICATION_QUEUE = "notification.queue";
   public static final String WATER_LOGGING_ROUTING_KEY = "water.logging.routing.key";
   public static final String WATER_LOGGING_DLQ = "water.logging.dlq";
   public static final String WATER_LOGGING_DLQ_ROUTING_KEY = "water.logging.dlq.routing.key";
@@ -53,6 +55,7 @@ public class RabbitMQConfig {
   @Bean
   public Binding waterLoggingDlqBinding(Queue waterLoggingDlq, TopicExchange deadLetterExchange) {
     return BindingBuilder.bind(waterLoggingDlq).to(deadLetterExchange).with(WATER_LOGGING_DLQ_ROUTING_KEY);
+
   }
 
   @Bean
@@ -70,4 +73,5 @@ public class RabbitMQConfig {
     factory.setDefaultRequeueRejected(false);
     return factory;
   }
+
 }

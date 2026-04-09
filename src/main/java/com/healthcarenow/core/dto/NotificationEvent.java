@@ -24,4 +24,5 @@ public class NotificationEvent {
 
   // Additional parameters like {name}, {location}, or fallback email/token
   private Map<String, Object> payload;
+
 }
