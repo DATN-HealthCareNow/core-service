@@ -5,8 +5,8 @@ import com.healthcarenow.core.dto.NotificationEvent;
 import com.healthcarenow.core.model.mongo.PatientProfile;
 import com.healthcarenow.core.model.mongo.WaterIntake;
 import com.healthcarenow.core.repository.mongo.PatientProfileRepository;
+import com.healthcarenow.core.repository.mongo.WaterIntakeRepository;
 import com.healthcarenow.core.service.NotificationProducer;
-import com.healthcarenow.core.service.WaterIntakeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -28,7 +28,7 @@ import java.util.Map;
 public class AutoNotificationScheduler {
 
     private final PatientProfileRepository patientProfileRepository;
-    private final WaterIntakeService waterIntakeService;
+    private final WaterIntakeRepository waterIntakeRepository;
     private final NotificationProducer notificationProducer;
 
     // Chạy lúc 7:00, 12:00, 18:00 mỗi ngày
@@ -43,7 +43,15 @@ public class AutoNotificationScheduler {
                 if (userId == null)
                     continue;
 
-                WaterIntake intake = waterIntakeService.getTodayWaterIntake(userId);
+                String todayString = LocalDate.now().toString();
+                List<WaterIntake> logs = waterIntakeRepository.findByUserIdAndDateString(userId, todayString);
+                
+                // Nếu không có log nào tức là người dùng chưa đăng nhập hôm nay -> bỏ qua tránh tạo rác
+                if (logs.isEmpty()) {
+                    continue;
+                }
+                
+                WaterIntake intake = logs.get(0);
                 int totalToday = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
                 int goal = intake.getGoalMl() != null ? intake.getGoalMl() : 0;
 

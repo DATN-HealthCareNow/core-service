@@ -28,18 +28,17 @@ public class WaterIntakeService {
   private final PatientProfileRepository patientProfileRepository;
 
   public void handleWaterLoggedEvent(String userId, Integer amountMl, String dateString) {
-      LocalDate date = LocalDate.parse(dateString);
-      WaterIntake intake = waterIntakeRepository.findFirstByUserIdAndDateOrderByTimestampDesc(userId, date);
+      WaterIntake intake = waterIntakeRepository.findFirstByUserIdAndDateStringOrderByTimestampDesc(userId, dateString);
       if (intake == null) {
           intake = getTodayWaterIntake(userId);
-          intake.setDate(date);
+          intake.setDateString(dateString);
       }
       
       int currentTotal = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
       intake.setTotalTodayMl(currentTotal + amountMl);
       intake.setAmountMl(amountMl);
       intake.setTimestamp(LocalDateTime.now());
-      intake.setDate(date);
+      intake.setDateString(dateString);
       
       if (intake.getGoalMl() != null && intake.getGoalMl() > 0) {
           double progress = (double) intake.getTotalTodayMl() / intake.getGoalMl() * 100.0;
@@ -52,15 +51,15 @@ public class WaterIntakeService {
   }
 
   public WaterIntake getTodayWaterIntake(String userId) {
-      LocalDate today = LocalDate.now();
-      List<WaterIntake> logs = waterIntakeRepository.findByUserIdAndDate(userId, today);
+      String todayString = LocalDate.now().toString();
+      List<WaterIntake> logs = waterIntakeRepository.findByUserIdAndDateString(userId, todayString);
       if (!logs.isEmpty()) {
           return logs.get(0);
       }
       
       WaterIntake newIntake = new WaterIntake();
       newIntake.setUserId(userId);
-      newIntake.setDate(today);
+      newIntake.setDateString(todayString);
       newIntake.setTimestamp(LocalDateTime.now());
       newIntake.setTotalTodayMl(0);
       newIntake.setAmountMl(0);

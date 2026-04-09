@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface WaterIntakeRepository extends MongoRepository<WaterIntake, String> {
-  List<WaterIntake> findByUserIdAndDate(String userId, LocalDate date);
+  List<WaterIntake> findByUserIdAndDateString(String userId, String dateString);
 
-  WaterIntake findFirstByUserIdAndDateOrderByTimestampDesc(String userId, LocalDate date);
+  WaterIntake findFirstByUserIdAndDateStringOrderByTimestampDesc(String userId, String dateString);
 }

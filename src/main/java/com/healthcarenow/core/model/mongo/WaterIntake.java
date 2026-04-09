@@ -19,7 +19,7 @@ public class WaterIntake {
 
   private LocalDateTime timestamp;
   private Integer amountMl;
-  private LocalDate date;
+  private String dateString;
 
   private Integer totalTodayMl;
   private Integer goalMl;
