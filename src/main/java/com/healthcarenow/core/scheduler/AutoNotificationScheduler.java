@@ -43,7 +43,10 @@ public class AutoNotificationScheduler {
                 if (userId == null)
                     continue;
 
-                WaterIntake intake = waterIntakeService.getTodayWaterIntake(userId);
+                WaterIntake intake = waterIntakeService.findTodayWaterIntake(userId);
+                if (intake == null) {
+                    continue;
+                }
                 int totalToday = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
                 int goal = intake.getGoalMl() != null ? intake.getGoalMl() : 0;
 

@@ -1,7 +1,6 @@
 package com.healthcarenow.core.service;
 
 import com.healthcarenow.core.dto.MusicFileDTO;
-import com.healthcarenow.core.dto.MusicUploadRequest;
 import com.healthcarenow.core.dto.MusicUploadResponse;
 import com.healthcarenow.core.model.mongo.MusicFile;
 import com.healthcarenow.core.repository.mongo.MusicRepository;
@@ -18,7 +17,9 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import jakarta.annotation.PostConstruct;
-import java.util.Base64;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,24 +56,30 @@ public class MusicService {
     /**
      * Upload music file to S3 and save metadata to MongoDB
      */
-    public MusicUploadResponse uploadMusic(String userId, MusicUploadRequest request) {
+    public MusicUploadResponse uploadMusic(
+            String userId,
+            MultipartFile file,
+            String fileName,
+            String contentType,
+            String description) {
         try {
-            // Decode Base64 file data
-            byte[] fileBytes = Base64.getDecoder().decode(request.getFileData());
-            
-            log.info("Uploading music file: {} ({} bytes) for user: {}", 
-                request.getFileName(), fileBytes.length, userId);
+            String resolvedFileName = resolveFileName(file, fileName);
+            String resolvedContentType = resolveContentType(file, contentType);
+            long fileSize = file.getSize();
+
+            log.info("Uploading music file: {} ({} bytes) for user: {}",
+                resolvedFileName, fileSize, userId);
 
             // Validate file size (50MB max)
-            if (fileBytes.length > 50 * 1024 * 1024) {
+            if (fileSize > 50 * 1024 * 1024) {
                 throw new IllegalArgumentException("File size exceeds maximum limit of 50MB");
             }
 
             // Generate S3 key
-            String s3Key = generateS3Key(userId, request.getFileName());
+            String s3Key = generateS3Key(userId, resolvedFileName);
 
             // Upload to S3
-            uploadToS3(fileBytes, s3Key, request.getContentType());
+            uploadToS3(file, s3Key, resolvedContentType);
 
             // Generate S3 URL
             String fileUrl = generateS3Url(s3Key);
@@ -80,19 +87,19 @@ public class MusicService {
             // Save metadata to MongoDB
             MusicFile musicFile = MusicFile.builder()
                     .userId(userId)
-                    .fileName(request.getFileName())
+                    .fileName(resolvedFileName)
                     .fileUrl(fileUrl)
                     .s3Key(s3Key)
-                    .fileSize((long) fileBytes.length)
-                    .contentType(request.getContentType())
+                    .fileSize(fileSize)
+                    .contentType(resolvedContentType)
                     .status("UPLOADED")
-                    .description(request.getDescription())
+                    .description(description)
                     .isDefault(false)
                     .build();
 
             musicFile = musicRepository.save(musicFile);
 
-            log.info("Music file uploaded successfully: {} (ID: {})", request.getFileName(), musicFile.getId());
+            log.info("Music file uploaded successfully: {} (ID: {})", resolvedFileName, musicFile.getId());
 
             return MusicUploadResponse.builder()
                     .id(musicFile.getId())
@@ -106,6 +113,9 @@ public class MusicService {
         } catch (IllegalArgumentException e) {
             log.error("Invalid file: {}", e.getMessage());
             throw e;
+        } catch (IOException e) {
+            log.error("Error reading uploaded file", e);
+            throw new RuntimeException("Failed to read uploaded music file: " + e.getMessage());
         } catch (Exception e) {
             log.error("Error uploading music file", e);
             throw new RuntimeException("Failed to upload music file: " + e.getMessage());
@@ -165,7 +175,7 @@ public class MusicService {
 
     // ===== Helper Methods =====
 
-    private void uploadToS3(byte[] fileBytes, String s3Key, String contentType) {
+    private void uploadToS3(MultipartFile file, String s3Key, String contentType) throws IOException {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(s3Key)
@@ -173,7 +183,7 @@ public class MusicService {
                 .acl("public-read")
                 .build();
 
-        s3Client.putObject(putObjectRequest, RequestBody.fromBytes(fileBytes));
+        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
     }
 
     private void deleteFromS3(String s3Key) {
@@ -193,6 +203,31 @@ public class MusicService {
 
     private String generateS3Url(String s3Key) {
         return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, s3Key);
+    }
+
+    private String resolveFileName(MultipartFile file, String fileName) {
+        if (fileName != null && !fileName.isBlank()) {
+            return fileName;
+        }
+
+        String originalName = file.getOriginalFilename();
+        if (originalName != null && !originalName.isBlank()) {
+            return originalName;
+        }
+
+        return "audio-file.mp3";
+    }
+
+    private String resolveContentType(MultipartFile file, String contentType) {
+        if (contentType != null && !contentType.isBlank()) {
+            return contentType;
+        }
+
+        if (file.getContentType() != null && !file.getContentType().isBlank()) {
+            return file.getContentType();
+        }
+
+        return "audio/mpeg";
     }
 
     private MusicFileDTO convertToDTO(MusicFile musicFile) {
