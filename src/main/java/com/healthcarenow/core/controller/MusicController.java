@@ -1,18 +1,18 @@
 package com.healthcarenow.core.controller;
 
 import com.healthcarenow.core.dto.MusicFileDTO;
-import com.healthcarenow.core.dto.MusicUploadRequest;
 import com.healthcarenow.core.dto.MusicUploadResponse;
 import com.healthcarenow.core.service.MusicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -27,14 +27,17 @@ public class MusicController {
      * Upload music file
      * POST /api/v1/music/upload
      */
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MusicUploadResponse> uploadMusic(
             @AuthenticationPrincipal String userId,
-            @Valid @RequestBody MusicUploadRequest request) {
+            @RequestPart("file") MultipartFile file,
+            @RequestParam(value = "fileName", required = false) String fileName,
+            @RequestParam(value = "contentType", required = false) String contentType,
+            @RequestParam(value = "description", required = false) String description) {
         
-        log.info("Uploading music file: {} for user: {}", request.getFileName(), userId);
+        log.info("Uploading music file: {} for user: {}", fileName, userId);
         
-        MusicUploadResponse response = musicService.uploadMusic(userId, request);
+        MusicUploadResponse response = musicService.uploadMusic(userId, file, fileName, contentType, description);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

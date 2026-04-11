@@ -16,10 +16,7 @@ public class MusicUploadRequest {
     
     @JsonProperty("file_name")
     private String fileName;
-    
-    @JsonProperty("file_data")
-    private String fileData; // Base64 encoded file content
-    
+
     @JsonProperty("content_type")
     private String contentType; // e.g., "audio/mpeg"
     
