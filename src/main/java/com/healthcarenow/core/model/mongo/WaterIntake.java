@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Document(collection = "water_intakes")
 @CompoundIndexes({
-  @CompoundIndex(name = "water_intake_user_date_unique", def = "{'userId': 1, 'date': 1}", unique = true)
+  @CompoundIndex(name = "water_intake_user_date_index", def = "{'userId': 1, 'date': 1}")
 })
 @Data
 public class WaterIntake {
