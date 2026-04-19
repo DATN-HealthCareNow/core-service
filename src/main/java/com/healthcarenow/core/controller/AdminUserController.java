@@ -16,7 +16,7 @@ import java.util.List;
 public class AdminUserController {
   
   private final AdminUserService adminUserService;
-
+  //test
   @GetMapping
   public ResponseEntity<List<UserAdminResponse>> getAllUsers(@AuthenticationPrincipal String adminId) {
     return ResponseEntity.ok(adminUserService.getAllUsers(adminId));
