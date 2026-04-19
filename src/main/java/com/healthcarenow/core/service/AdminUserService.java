@@ -41,8 +41,17 @@ public class AdminUserService {
           .role(user.getRole() != null ? user.getRole().name() : "USER")
           .status(user.getStatus())
           .dateOfBirth(profile != null ? profile.getDateOfBirth() : null)
-          .heightCm(profile != null ? profile.getHeightCm() : null)
-          .weightKg(profile != null ? profile.getWeightKg() : null)
+          .heightCm(
+              profile != null && profile.getHeightCm() != null
+                  ? profile.getHeightCm().doubleValue()
+                  : null
+          )
+
+          .weightKg(
+              profile != null && profile.getWeightKg() != null
+                  ? profile.getWeightKg().doubleValue()
+                  : null
+          )
           .avatarUrl(profile != null ? profile.getAvatarUrl() : null)
           .createdAt(user.getCreatedAt())
           .build();
@@ -71,8 +80,13 @@ public class AdminUserService {
         .role(user.getRole().name())
         .status(user.getStatus())
         .dateOfBirth(profile != null ? profile.getDateOfBirth() : null)
-        .heightCm(profile != null ? profile.getHeightCm() : null)
-        .weightKg(profile != null ? profile.getWeightKg() : null)
+        .heightCm(profile != null && profile.getHeightCm() != null 
+            ? profile.getHeightCm().doubleValue() 
+            : null)
+
+        .weightKg(profile != null && profile.getWeightKg() != null 
+            ? profile.getWeightKg().doubleValue() 
+            : null)
         .avatarUrl(profile != null ? profile.getAvatarUrl() : null)
         .createdAt(user.getCreatedAt())
         .build();
