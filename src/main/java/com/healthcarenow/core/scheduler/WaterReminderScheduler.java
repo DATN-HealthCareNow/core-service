@@ -6,6 +6,7 @@ import com.healthcarenow.core.model.mongo.User;
 import com.healthcarenow.core.repository.mongo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(prefix = "notification.scheduler.core", name = "enabled", havingValue = "true")
 public class WaterReminderScheduler {
 
   private final UserRepository userRepository;
@@ -35,14 +37,14 @@ public class WaterReminderScheduler {
         payload.put("language", "vi");
 
         NotificationEvent event = NotificationEvent.builder()
-            .eventType("WATER_REMIND")
+            .eventType("WATER_REMINDER")
             .userId(user.getId())
             .priority("NORMAL")
             .payload(payload)
             .build();
 
         rabbitTemplate.convertAndSend(RabbitMQConfig.NOTIFICATION_QUEUE, event);
-        log.debug("Sent WATER_REMIND event for user: {}", user.getId());
+        log.debug("Sent WATER_REMINDER event for user: {}", user.getId());
       } catch (Exception e) {
         log.error("Failed to send water reminder for user {}: {}", user.getId(), e.getMessage());
       }
