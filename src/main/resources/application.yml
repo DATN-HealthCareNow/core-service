@@ -4,6 +4,11 @@ server:
 app:
   internal-token: ${APP_INTERNAL_TOKEN:hcn-internal-secret-2024}
 
+notification:
+  scheduler:
+    core:
+      enabled: ${CORE_NOTIFICATION_SCHEDULER_ENABLED:false}
+
 spring:
   servlet:
     multipart:

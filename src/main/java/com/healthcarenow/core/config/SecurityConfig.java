@@ -23,7 +23,7 @@ public class SecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/v1/internal/**").permitAll() // Internal API
+            .requestMatchers("/api/v1/internal/**", "/api/v1/*/internal/**").permitAll() // Internal APIs (protected by X-Internal-Token in controllers)
             .requestMatchers("/api/v1/auth/**").permitAll() // Must match exactly
             .requestMatchers("/api/v1/articles/**").permitAll() // 
             .requestMatchers("/error").permitAll() // Allow error page

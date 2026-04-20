@@ -9,6 +9,7 @@ import com.healthcarenow.core.service.NotificationProducer;
 import com.healthcarenow.core.service.WaterIntakeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,6 +26,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(prefix = "notification.scheduler.core", name = "enabled", havingValue = "true")
 public class AutoNotificationScheduler {
 
     private final PatientProfileRepository patientProfileRepository;
