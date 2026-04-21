@@ -4,6 +4,7 @@ import com.healthcarenow.core.config.RabbitMQConfig;
 import com.healthcarenow.core.dto.NotificationEvent;
 import com.healthcarenow.core.model.mongo.User;
 import com.healthcarenow.core.repository.mongo.UserRepository;
+import com.healthcarenow.core.service.WaterIntakeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
