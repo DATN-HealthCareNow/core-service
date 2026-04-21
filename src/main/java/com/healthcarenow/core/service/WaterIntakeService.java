@@ -34,7 +34,12 @@ public class WaterIntakeService {
     WaterIntake intake = getOrCreateWaterIntake(userId, date);
 
     int currentTotal = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
-    intake.setTotalTodayMl(currentTotal + amountMl);
+    int newTotal = currentTotal + (amountMl != null ? amountMl : 0);
+    
+    log.info("Updating water intake for user {}: {}ml + {}ml = {}ml (date: {})", 
+        userId, currentTotal, amountMl, newTotal, dateString);
+
+    intake.setTotalTodayMl(newTotal);
     intake.setAmountMl(amountMl);
     intake.setTimestamp(LocalDateTime.now(BUSINESS_ZONE));
     intake.setDate(date);
@@ -63,10 +68,17 @@ public class WaterIntakeService {
       return existing;
     }
 
+    // Try to find ANY record for today to avoid duplicates if timestamp ordering is tricky
+    var allToday = waterIntakeRepository.findByUserIdAndDate(userId, date);
+    if (!allToday.isEmpty()) {
+      return allToday.get(0);
+    }
+
     WaterIntake newIntake = buildWaterIntake(userId, date);
     try {
       return waterIntakeRepository.save(newIntake);
     } catch (DuplicateKeyException e) {
+      // In case of race condition, try to find it again
       WaterIntake retry = waterIntakeRepository.findFirstByUserIdAndDateOrderByTimestampDesc(userId, date);
       if (retry != null) {
         return retry;
