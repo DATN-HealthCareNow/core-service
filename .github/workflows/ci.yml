@@ -104,8 +104,8 @@ jobs:
             sudo docker pull 632469639580.dkr.ecr.ap-southeast-1.amazonaws.com/healthcare-core-service:latest
             
             echo "3. Cập nhật và khởi động lại core-service..."
-            # Di chuyển vào thư mục cấu hình devops-service trên EC2 (Bạn nhớ đổi đúng tên thư mục chứa docker-compose.yml nếu khác)
-            cd ~/devops-service
+            # Di chuyển vào thư mục cấu hình devops_service trên EC2
+            cd ~/devops_service || cd ~/devops-service || exit 1
             sudo docker compose up -d core-service
             
             echo "4. Dọn dẹp các Image cũ để tránh đầy ổ cứng server..."
