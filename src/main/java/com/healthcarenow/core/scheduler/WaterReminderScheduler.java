@@ -24,7 +24,7 @@ public class WaterReminderScheduler {
   private final UserRepository userRepository;
   private final RabbitTemplate rabbitTemplate;
 
-  @Scheduled(cron = "0 * * * * ?", zone = "Asia/Ho_Chi_Minh")
+  @Scheduled(cron = "0 0 7,12,18 * * ?", zone = "Asia/Ho_Chi_Minh")
   public void triggerWaterReminders() {
     log.info("[WATER_REMINDER] Starting to send water reminders to active users...");
     List<User> activeUsers = userRepository.findByStatus("ACTIVE");
