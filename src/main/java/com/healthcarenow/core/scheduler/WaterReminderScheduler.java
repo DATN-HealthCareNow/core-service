@@ -24,6 +24,8 @@ public class WaterReminderScheduler {
   private final UserRepository userRepository;
   private final RabbitTemplate rabbitTemplate;
 
+  private final WaterIntakeService waterIntakeService;
+
   @Scheduled(cron = "0 0 7,12,18 * * ?", zone = "Asia/Ho_Chi_Minh")
   public void triggerWaterReminders() {
     log.info("[WATER_REMINDER] Starting to send water reminders to active users...");
@@ -31,10 +33,24 @@ public class WaterReminderScheduler {
 
     for (User user : activeUsers) {
       try {
+        var progress = waterIntakeService.getTodayWaterIntake(user.getId());
+        int currentMl = progress.getTotalTodayMl() != null ? progress.getTotalTodayMl() : 0;
+        int goalMl = progress.getGoalMl() != null ? progress.getGoalMl() : 2000;
+        int neededMl = Math.max(goalMl - currentMl, 0);
+
+        if (neededMl <= 0) {
+          log.debug("User {} already met water goal, skipping reminder", user.getId());
+          continue;
+        }
+
         Map<String, Object> payload = new HashMap<>();
         payload.put("title", "Đã đến giờ uống nước!");
-        payload.put("body", "Hãy uống một cốc nước để duy trì sức khỏe nhé!");
+        payload.put("body", String.format("Bạn cần uống thêm %d ml nước nữa để đạt mục tiêu ngày hôm nay (%d/%d ml). Hãy uống ngay nhé!", 
+            neededMl, currentMl, goalMl));
         payload.put("language", "vi");
+        payload.put("neededMl", neededMl);
+        payload.put("currentMl", currentMl);
+        payload.put("goalMl", goalMl);
 
         NotificationEvent event = NotificationEvent.builder()
             .eventType("WATER_REMINDER")
@@ -44,7 +60,7 @@ public class WaterReminderScheduler {
             .build();
 
         rabbitTemplate.convertAndSend(RabbitMQConfig.NOTIFICATION_QUEUE, event);
-        log.debug("Sent WATER_REMINDER event for user: {}", user.getId());
+        log.debug("Sent WATER_REMINDER event for user: {} (needed: {}ml)", user.getId(), neededMl);
       } catch (Exception e) {
         log.error("Failed to send water reminder for user {}: {}", user.getId(), e.getMessage());
       }
