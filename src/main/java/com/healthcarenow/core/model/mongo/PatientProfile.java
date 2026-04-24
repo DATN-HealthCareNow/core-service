@@ -36,6 +36,15 @@ public class PatientProfile {
 
   private List<EmergencyContact> emergencyContacts;
 
+  private List<String> medicalHistory; // List of past/current diagnoses
+  private List<RestrictedFood> restrictedFoods; // Structured list of restricted foods
+
+  @Data
+  public static class RestrictedFood {
+    private String foodName;
+    private String sourceId; // Reference to the prescription or scan that caused this restriction
+  }
+
   private PrivacySettings privacySettings;
 
   @Data
