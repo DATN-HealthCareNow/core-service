@@ -27,7 +27,7 @@ public class ArticleController {
 
   @GetMapping
   public ResponseEntity<List<ArticleResponse>> getPublishedArticles() {
-    return ResponseEntity.ok(articleService.getAdminArticles());
+    return ResponseEntity.ok(articleService.getPublishedArticles());
   }
 
   @PostMapping
@@ -50,6 +50,11 @@ public class ArticleController {
       @PathVariable String id
   ) {
     return ResponseEntity.ok(articleService.publishArticle(id));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<ArticleResponse> getArticleById(@PathVariable String id) {
+    return ResponseEntity.ok(articleService.getArticleById(id));
   }
 
 

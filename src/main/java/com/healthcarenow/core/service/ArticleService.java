@@ -98,6 +98,16 @@ public class ArticleService {
     return toResponse(saved);
   }
 
+  public ArticleResponse getArticleById(String id) {
+    Article article = articleRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Article not found"));
+    
+    article.setViews(article.getViews() != null ? article.getViews() + 1 : 1);
+    articleRepository.save(article);
+
+    return toResponse(article);
+  }
+
   public List<ArticleResponse> getPublishedArticles() {
     return articleRepository.findByStatusOrderByPublishedAtDesc(STATUS_PUBLISHED).stream()
         .sorted(Comparator.comparing(Article::getPublishedAt, Comparator.nullsLast(Comparator.naturalOrder())).reversed())

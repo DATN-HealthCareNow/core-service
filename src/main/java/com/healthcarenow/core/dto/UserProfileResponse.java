@@ -23,5 +23,12 @@ public class UserProfileResponse {
   private Integer weight;
   @JsonProperty("avatar_url")
   private String avatarUrl;
+  
+  @JsonProperty("medical_history")
+  private java.util.List<String> medicalHistory;
+  
+  @JsonProperty("forbidden_foods")
+  private java.util.List<String> forbiddenFoods;
+
   private PatientProfile.PrivacySettings privacySettings;
 }

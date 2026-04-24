@@ -33,4 +33,11 @@ public class MedicalRecordController {
   public ResponseEntity<MedicalRecordDTO> getRecord(@PathVariable String id) {
     return ResponseEntity.ok(medicalRecordService.getRecord(id));
   }
+
+  @PutMapping("/{id}/forbidden-foods")
+  public ResponseEntity<MedicalRecordDTO> updateForbiddenFoods(
+      @PathVariable String id,
+      @RequestBody List<String> foods) {
+    return ResponseEntity.ok(medicalRecordService.updateForbiddenFoods(id, foods));
+  }
 }

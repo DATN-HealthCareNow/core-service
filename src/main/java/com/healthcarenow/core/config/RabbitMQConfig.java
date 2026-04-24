@@ -23,6 +23,8 @@ public class RabbitMQConfig {
   public static final String WATER_LOGGING_ROUTING_KEY = "water.logging.routing.key";
   public static final String WATER_LOGGING_DLQ = "water.logging.dlq";
   public static final String WATER_LOGGING_DLQ_ROUTING_KEY = "water.logging.dlq.routing.key";
+  public static final String MEDICATION_CLEANUP_QUEUE = "medication.cleanup.queue";
+  public static final String MEDICATION_CLEANUP_ROUTING_KEY = "medication.cleanup.routing.key";
 
   @Bean
   public TopicExchange healthcareExchange() {
@@ -53,9 +55,13 @@ public class RabbitMQConfig {
   }
 
   @Bean
-  public Binding waterLoggingDlqBinding(Queue waterLoggingDlq, TopicExchange deadLetterExchange) {
-    return BindingBuilder.bind(waterLoggingDlq).to(deadLetterExchange).with(WATER_LOGGING_DLQ_ROUTING_KEY);
+  public Queue medicationCleanupQueue() {
+    return new Queue(MEDICATION_CLEANUP_QUEUE, true);
+  }
 
+  @Bean
+  public Binding medicationCleanupBinding(Queue medicationCleanupQueue, TopicExchange healthcareExchange) {
+    return BindingBuilder.bind(medicationCleanupQueue).to(healthcareExchange).with(MEDICATION_CLEANUP_ROUTING_KEY);
   }
 
   @Bean

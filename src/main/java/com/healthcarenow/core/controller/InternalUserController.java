@@ -40,4 +40,22 @@ public class InternalUserController {
     userService.removeDeviceToken(userId);
     return ResponseEntity.ok().build();
   }
+  @DeleteMapping("/{userId}/forbidden-foods")
+  public ResponseEntity<Void> clearForbiddenFoods(
+      @RequestHeader(value = "X-Internal-Token", required = false) String token,
+      @PathVariable String userId) {
+    validateInternalToken(token);
+    userService.clearForbiddenFoods(userId);
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("/{userId}/forbidden-foods/{sourceId}")
+  public ResponseEntity<Void> clearForbiddenFoodsBySource(
+      @RequestHeader(value = "X-Internal-Token", required = false) String token,
+      @PathVariable String userId,
+      @PathVariable String sourceId) {
+    validateInternalToken(token);
+    userService.removeForbiddenFoodsBySource(userId, sourceId);
+    return ResponseEntity.ok().build();
+  }
 }

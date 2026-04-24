@@ -44,6 +44,9 @@ public class UserService {
         .height(profile.getHeightCm())
         .weight(profile.getWeightKg())
         .avatarUrl(profile.getAvatarUrl())
+        .medicalHistory(profile.getMedicalHistory())
+        .forbiddenFoods(profile.getRestrictedFoods() != null ? 
+            profile.getRestrictedFoods().stream().map(PatientProfile.RestrictedFood::getFoodName).toList() : null)
         .privacySettings(profile.getPrivacySettings())
         .build();
   }
@@ -77,6 +80,42 @@ public class UserService {
     if (request.getWeight() != null) {
       System.out.println("Setting weight to: " + request.getWeight());
       profile.setWeightKg(request.getWeight());
+    }
+
+    if (request.getMedicalHistory() != null) {
+      // Append new medical history if it doesn't already exist or just replace?
+      // Usually diagnosis is added to a list.
+      java.util.List<String> currentHistory = profile.getMedicalHistory();
+      if (currentHistory == null) currentHistory = new java.util.ArrayList<>();
+      for (String history : request.getMedicalHistory()) {
+          if (!currentHistory.contains(history)) {
+              currentHistory.add(history);
+          }
+      }
+      profile.setMedicalHistory(currentHistory);
+    }
+
+    if (request.getForbiddenFoods() != null) {
+        java.util.List<PatientProfile.RestrictedFood> currentRestricted = profile.getRestrictedFoods();
+        if (currentRestricted == null) currentRestricted = new java.util.ArrayList<>();
+        
+        String sourceId = request.getSourceId() != null ? request.getSourceId() : "manual";
+
+      // Replace all foods from the same source to keep client and DB in sync.
+      currentRestricted.removeIf(rf -> sourceId.equals(rf.getSourceId()));
+        
+        for (String foodName : request.getForbiddenFoods()) {
+            boolean exists = currentRestricted.stream()
+                .anyMatch(rf -> rf.getFoodName().equalsIgnoreCase(foodName) && sourceId.equals(rf.getSourceId()));
+            
+            if (!exists) {
+                PatientProfile.RestrictedFood rf = new PatientProfile.RestrictedFood();
+                rf.setFoodName(foodName);
+                rf.setSourceId(sourceId);
+                currentRestricted.add(rf);
+            }
+        }
+        profile.setRestrictedFoods(currentRestricted);
     }
 
     patientProfileRepository.save(profile);
@@ -153,5 +192,24 @@ public class UserService {
     profile.setLastActiveAt(java.time.LocalDateTime.now());
     profile.setUpdatedAt(java.time.LocalDateTime.now());
     patientProfileRepository.save(profile);
+  }
+
+  public void clearForbiddenFoods(String userId) {
+    patientProfileRepository.findByUserId(userId).ifPresent(profile -> {
+        profile.setRestrictedFoods(new java.util.ArrayList<>());
+        profile.setUpdatedAt(java.time.LocalDateTime.now());
+        patientProfileRepository.save(profile);
+    });
+  }
+
+  public void removeForbiddenFoodsBySource(String userId, String sourceId) {
+    patientProfileRepository.findByUserId(userId).ifPresent(profile -> {
+        if (profile.getRestrictedFoods() != null) {
+            profile.getRestrictedFoods().removeIf(rf -> sourceId.equals(rf.getSourceId()));
+            profile.setUpdatedAt(java.time.LocalDateTime.now());
+            patientProfileRepository.save(profile);
+            System.out.println("Removed forbidden foods for source: " + sourceId);
+        }
+    });
   }
 }

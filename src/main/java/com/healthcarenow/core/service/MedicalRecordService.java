@@ -22,6 +22,18 @@ public class MedicalRecordService {
     record.setTitle(dto.getTitle());
     record.setClinicalNotes(dto.getClinicalNotes());
     record.setIcdCodes(dto.getIcdCodes());
+    
+    if (dto.getImageUrl() != null) {
+        MedicalRecord.FileMeta fileMeta = new MedicalRecord.FileMeta();
+        fileMeta.setS3Url(dto.getImageUrl());
+        fileMeta.setFileType("image/jpeg");
+        fileMeta.setAiProcessed(true);
+        record.setFiles(java.util.List.of(fileMeta));
+    }
+    
+    if (dto.getAiAnalysis() != null) {
+        record.setClinicalNotes(record.getClinicalNotes() + "\nAI Analysis: " + dto.getAiAnalysis());
+    }
 
     MedicalRecord saved = medicalRecordRepository.save(record);
     dto.setId(saved.getId());
@@ -47,6 +59,17 @@ public class MedicalRecordService {
     dto.setTitle(record.getTitle());
     dto.setClinicalNotes(record.getClinicalNotes());
     dto.setIcdCodes(record.getIcdCodes());
+    
+    if (record.getFiles() != null && !record.getFiles().isEmpty()) {
+        dto.setImageUrl(record.getFiles().get(0).getS3Url());
+    }
+    dto.setForbiddenFoods(record.getForbiddenFoods());
     return dto;
+  }
+
+  public MedicalRecordDTO updateForbiddenFoods(String id, List<String> foods) {
+      MedicalRecord record = medicalRecordRepository.findById(id).orElseThrow();
+      record.setForbiddenFoods(foods);
+      return mapToDTO(medicalRecordRepository.save(record));
   }
 }

@@ -10,5 +10,7 @@ public class MedicalRecordDTO {
   private String title;
   private String clinicalNotes;
   private List<String> icdCodes;
-  // Simplified for MVP
+  private List<String> forbiddenFoods;
+  private String imageUrl;
+  private String aiAnalysis; // JSON string of the analysis result
 }
