@@ -58,6 +58,7 @@ public class MedicalRecordService {
     dto.setId(record.getId());
     dto.setRecordType(record.getRecordType());
     dto.setTitle(record.getTitle());
+    dto.setDiagnosis(record.getDiagnosis());
     dto.setClinicalNotes(record.getClinicalNotes());
     dto.setIcdCodes(record.getIcdCodes());
     
@@ -65,6 +66,7 @@ public class MedicalRecordService {
         dto.setImageUrl(record.getFiles().get(0).getS3Url());
     }
     dto.setForbiddenFoods(record.getForbiddenFoods());
+    dto.setMedications(record.getMedications());
     
     if (record.getAiAnalysis() != null) {
         if (record.getAiAnalysis() instanceof String) {
