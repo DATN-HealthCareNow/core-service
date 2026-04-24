@@ -19,9 +19,11 @@ public class MedicalRecord {
 
   private String recordType; // e.g., LAB, DIAGNOSIS
   private String title;
+  private String diagnosis;
   private String clinicalNotes;
   private List<String> icdCodes;
   private List<String> forbiddenFoods;
+  private List<Object> medications;
   private Object aiAnalysis;
 
   private AuditLog auditLog;
