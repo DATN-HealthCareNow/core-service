@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class MedicalRecordService {
 
   private final MedicalRecordRepository medicalRecordRepository;
+  private final org.springframework.data.mongodb.core.MongoTemplate mongoTemplate;
 
   public MedicalRecordDTO createRecord(String userId, MedicalRecordDTO dto) {
     MedicalRecord record = new MedicalRecord();
@@ -64,12 +65,28 @@ public class MedicalRecordService {
         dto.setImageUrl(record.getFiles().get(0).getS3Url());
     }
     dto.setForbiddenFoods(record.getForbiddenFoods());
+    
+    if (record.getAiAnalysis() != null) {
+        if (record.getAiAnalysis() instanceof String) {
+            dto.setAiAnalysis((String) record.getAiAnalysis());
+        } else {
+            try {
+                dto.setAiAnalysis(new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(record.getAiAnalysis()));
+            } catch (Exception e) {}
+        }
+    }
     return dto;
   }
 
   public MedicalRecordDTO updateForbiddenFoods(String id, List<String> foods) {
-      MedicalRecord record = medicalRecordRepository.findById(id).orElseThrow();
-      record.setForbiddenFoods(foods);
-      return mapToDTO(medicalRecordRepository.save(record));
+      org.springframework.data.mongodb.core.query.Query query = new org.springframework.data.mongodb.core.query.Query(
+          org.springframework.data.mongodb.core.query.Criteria.where("_id").is(id)
+      );
+      org.springframework.data.mongodb.core.query.Update update = new org.springframework.data.mongodb.core.query.Update()
+          .set("forbiddenFoods", foods);
+      
+      mongoTemplate.updateFirst(query, update, MedicalRecord.class);
+      
+      return getRecord(id);
   }
 }
