@@ -22,6 +22,7 @@ public class MedicalRecord {
   private String clinicalNotes;
   private List<String> icdCodes;
   private List<String> forbiddenFoods;
+  private Object aiAnalysis;
 
   private AuditLog auditLog;
   private Metadata metadata;
