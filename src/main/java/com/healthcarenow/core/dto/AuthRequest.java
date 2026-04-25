@@ -10,4 +10,5 @@ public class AuthRequest {
   private String fullName;
 
   private String idToken;
+  private String otp;
 }
