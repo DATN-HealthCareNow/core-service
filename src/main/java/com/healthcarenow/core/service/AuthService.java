@@ -46,7 +46,7 @@ public class AuthService {
   private static final String OTP_FORGOT_PASSWORD = "FORGOT_PASSWORD";
   private static final String OTP_CHANGE_PASSWORD = "CHANGE_PASSWORD";
   private static final String OTP_REGISTER = "REGISTER";
-  private static final Duration OTP_TTL = Duration.ofMinutes(5);
+  private static final Duration OTP_TTL = Duration.ofMinutes(10);
 
   private String otpKey(String purpose, String email) {
     return "auth:otp:" + purpose + ":" + email.toLowerCase().trim();
