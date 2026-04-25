@@ -45,6 +45,7 @@ public class AuthService {
 
   private static final String OTP_FORGOT_PASSWORD = "FORGOT_PASSWORD";
   private static final String OTP_CHANGE_PASSWORD = "CHANGE_PASSWORD";
+  private static final String OTP_REGISTER = "REGISTER";
   private static final Duration OTP_TTL = Duration.ofMinutes(5);
 
   private String otpKey(String purpose, String email) {
@@ -149,7 +150,45 @@ public class AuthService {
     redisTemplate.delete(key);
   }
 
+  public void requestRegisterOtp(String email) {
+    if (!StringUtils.hasText(email)) {
+      throw new BadRequestException("Email is required");
+    }
+    if (userRepository.existsByEmail(email.trim())) {
+      throw new BadRequestException("Email already in use");
+    }
+
+    String otp = generateOtpCode();
+    redisTemplate.opsForValue().set(otpKey(OTP_REGISTER, email), otp, OTP_TTL);
+
+    NotificationEvent event = NotificationEvent.builder()
+        .eventType("REGISTER_OTP")
+        .userId("system")
+        .priority("HIGH")
+        .payload(Map.of(
+            "email", email.trim(),
+            "language", "vi",
+            "otp_code", otp,
+            "otp_expiry_minutes", String.valueOf(OTP_TTL.toMinutes()),
+            "purpose", "đăng ký tài khoản"))
+        .build();
+
+    notificationProducer.sendNotification(event);
+  }
+
   public AuthResponse register(AuthRequest request) {
+    if (!StringUtils.hasText(request.getEmail()) || !StringUtils.hasText(request.getOtp())) {
+      throw new BadRequestException("Email and OTP are required");
+    }
+
+    String key = otpKey(OTP_REGISTER, request.getEmail());
+    Object storedOtpObj = redisTemplate.opsForValue().get(key);
+    String storedOtp = storedOtpObj == null ? null : String.valueOf(storedOtpObj);
+
+    if (!StringUtils.hasText(storedOtp) || !storedOtp.equals(request.getOtp().trim())) {
+      throw new BadRequestException("Invalid OTP");
+    }
+
     if (userRepository.existsByEmail(request.getEmail())) {
       throw new BadRequestException("Email already in use");
     }
@@ -177,6 +216,7 @@ public class AuthService {
     patientProfileRepository.save(profile);
 
     // 3. Create Session with standard JWT
+    redisTemplate.delete(key);
     return createSession(user);
   }
 

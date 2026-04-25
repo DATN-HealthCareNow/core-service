@@ -23,6 +23,12 @@ public class AuthController {
   private final AuthService authService;
   private final JwtTokenProvider tokenProvider;
 
+  @PostMapping("/register/request-otp")
+  public ResponseEntity<Void> requestRegisterOtp(@RequestBody AuthRequest request) {
+    authService.requestRegisterOtp(request.getEmail());
+    return ResponseEntity.ok().build();
+  }
+
   @PostMapping("/register")
   public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request) {
     return ResponseEntity.ok(authService.register(request));
