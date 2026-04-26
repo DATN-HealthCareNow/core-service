@@ -49,6 +49,9 @@ public class WaterReminderScheduler {
         payload.put("body", String.format("Bạn cần uống thêm %d ml nước nữa để đạt mục tiêu ngày hôm nay (%d/%d ml). Hãy uống ngay nhé!", 
             neededMl, currentMl, goalMl));
         payload.put("language", "vi");
+        payload.put("current", currentMl);
+        payload.put("goal", goalMl);
+        payload.put("needed", neededMl);
         payload.put("neededMl", neededMl);
         payload.put("currentMl", currentMl);
         payload.put("goalMl", goalMl);
