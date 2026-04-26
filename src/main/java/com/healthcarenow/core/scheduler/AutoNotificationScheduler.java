@@ -57,6 +57,9 @@ public class AutoNotificationScheduler {
                     payload.put("current", totalToday);
                     payload.put("goal", goal);
                     payload.put("needed", goal - totalToday);
+                    payload.put("currentMl", totalToday);
+                    payload.put("goalMl", goal);
+                    payload.put("neededMl", goal - totalToday);
 
                     NotificationEvent event = NotificationEvent.builder()
                             .eventType("WATER_REMINDER")

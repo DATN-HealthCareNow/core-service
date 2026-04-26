@@ -42,12 +42,16 @@ public class WaterEventListener {
             eventId = getText(node, "event_id", "eventId");
 
             if (eventId != null) {
-                Boolean firstTime = redisTemplate.opsForValue()
-                    .setIfAbsent(IDEMPOTENCY_KEY_PREFIX + eventId, "1", IDEMPOTENCY_TTL);
+                try {
+                    Boolean firstTime = redisTemplate.opsForValue()
+                        .setIfAbsent(IDEMPOTENCY_KEY_PREFIX + eventId, "1", IDEMPOTENCY_TTL);
 
-                if (Boolean.FALSE.equals(firstTime)) {
-                    log.warn("Skip duplicated water event eventId={}", eventId);
-                    return;
+                    if (Boolean.FALSE.equals(firstTime)) {
+                        log.warn("Skip duplicated water event eventId={}", eventId);
+                        return;
+                    }
+                } catch (Exception ex) {
+                    log.warn("Idempotency check failed for eventId={}, continuing without Redis", eventId, ex);
                 }
             }
 
@@ -60,13 +64,21 @@ public class WaterEventListener {
             } else {
                 log.warn("Invalid water log event message: {}", message);
                 if (eventId != null) {
-                    redisTemplate.delete(IDEMPOTENCY_KEY_PREFIX + eventId);
+                    try {
+                        redisTemplate.delete(IDEMPOTENCY_KEY_PREFIX + eventId);
+                    } catch (Exception ex) {
+                        log.warn("Failed to delete idempotency key for eventId={}", eventId, ex);
+                    }
                 }
                 throw new AmqpRejectAndDontRequeueException("Invalid water event payload");
             }
         } catch (Exception e) {
             if (eventId != null) {
-                redisTemplate.delete(IDEMPOTENCY_KEY_PREFIX + eventId);
+                try {
+                    redisTemplate.delete(IDEMPOTENCY_KEY_PREFIX + eventId);
+                } catch (Exception ex) {
+                    log.warn("Failed to delete idempotency key for eventId={}", eventId, ex);
+                }
             }
             log.error("Error processing water log event: {}", e.getMessage(), e);
             throw new AmqpRejectAndDontRequeueException("Failed to process water event", e);
