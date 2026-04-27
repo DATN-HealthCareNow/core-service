@@ -1,6 +1,7 @@
 package com.healthcarenow.core.dto;
 
 import lombok.Data;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,4 +16,13 @@ public class MedicalRecordDTO {
   private List<Object> medications;
   private String imageUrl;
   private String aiAnalysis; // JSON string of the analysis result
+
+  /** Ngày hết hạn đơn thuốc */
+  private LocalDateTime expiryDate;
+
+  /** ACTIVE | EXPIRED */
+  private String status;
+
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 }
