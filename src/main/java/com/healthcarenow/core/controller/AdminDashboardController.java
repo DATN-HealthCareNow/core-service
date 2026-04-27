@@ -21,7 +21,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/admin/dashboard")
+@RequestMapping("/api/v1/dashboard")
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class AdminDashboardController {

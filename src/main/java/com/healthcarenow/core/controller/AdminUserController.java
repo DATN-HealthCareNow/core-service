@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/admin/users")
+@RequestMapping("/api/v1/users")
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class AdminUserController {
   
   private final AdminUserService adminUserService;
-  //test
   @GetMapping
   public ResponseEntity<List<UserAdminResponse>> getAllUsers(@AuthenticationPrincipal String adminId) {
     return ResponseEntity.ok(adminUserService.getAllUsers(adminId));
