@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MedicalRecordRepository extends MongoRepository<MedicalRecord, String> {
   List<MedicalRecord> findByUserId(String userId);
+  List<MedicalRecord> findByUserIdOrderByCreatedAtDesc(String userId);
+  List<MedicalRecord> findByUserIdAndStatusOrderByCreatedAtDesc(String userId, String status);
 }

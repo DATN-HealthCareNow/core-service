@@ -26,6 +26,15 @@ public class MedicalRecord {
   private List<Object> medications;
   private Object aiAnalysis;
 
+  /** Ngày hết hạn đơn thuốc / bệnh án (do user hoặc AI đặt) */
+  private LocalDateTime expiryDate;
+
+  /** ACTIVE | EXPIRED */
+  private String status;
+
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+
   private AuditLog auditLog;
   private Metadata metadata;
   private List<FileMeta> files;
