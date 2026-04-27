@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/users/admin")
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class AdminUserController {
