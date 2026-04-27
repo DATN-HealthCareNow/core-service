@@ -26,6 +26,7 @@ public class SecurityConfig {
             .requestMatchers("/api/v1/internal/**", "/api/v1/*/internal/**").permitAll() // Internal APIs (protected by X-Internal-Token in controllers)
             .requestMatchers("/api/v1/auth/**").permitAll() // Must match exactly
             .requestMatchers("/api/v1/articles/**").permitAll() // 
+            .requestMatchers("/api/v1/admin/**").permitAll() // Allow error page
             .requestMatchers("/error").permitAll() // Allow error page
             .anyRequest().authenticated())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
