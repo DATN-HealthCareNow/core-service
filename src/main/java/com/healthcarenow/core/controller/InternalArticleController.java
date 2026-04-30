@@ -41,8 +41,4 @@ public class InternalArticleController {
     return ResponseEntity.ok(articleService.publishArticle(articleId));
   }
 
-  @PostMapping("/generate-draft")
-  public ResponseEntity<ArticleAIGenerateResponse> generateDraft(@RequestBody ArticleAIGenerateRequest request) {
-    return ResponseEntity.ok(articleService.generateDraft(request));
-  }
 }
