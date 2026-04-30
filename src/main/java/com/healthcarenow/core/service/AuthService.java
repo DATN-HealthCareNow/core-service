@@ -287,7 +287,10 @@ public class AuthService {
     session.setRevoked(false);
 
     sessionRepository.save(session);
+    
+    PatientProfile profile = patientProfileRepository.findByUserId(user.getId()).orElse(null);
+    String fullName = profile != null ? profile.getFullName() : "";
 
-    return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole().name());
+    return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole().name(), fullName);
   }
 }

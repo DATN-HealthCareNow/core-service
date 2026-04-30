@@ -12,4 +12,6 @@ public class AuthResponse {
   private String userId;
   private String email;
   private String role;
+  @JsonProperty("full_name")
+  private String fullName;
 }
