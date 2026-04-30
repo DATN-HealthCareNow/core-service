@@ -28,4 +28,12 @@ public class AdminUserController {
       @RequestBody ChangeRoleRequest request) {
     return ResponseEntity.ok(adminUserService.changeRole(adminId, userId, request.getRole()));
   }
+
+  @PutMapping("/{userId}/status")
+  public ResponseEntity<UserAdminResponse> changeStatus(
+      @AuthenticationPrincipal String adminId,
+      @PathVariable String userId,
+      @RequestBody java.util.Map<String, String> request) {
+    return ResponseEntity.ok(adminUserService.changeStatus(adminId, userId, request.get("status")));
+  }
 }

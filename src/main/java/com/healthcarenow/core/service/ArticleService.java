@@ -115,44 +115,6 @@ public class ArticleService {
         .toList();
   }
 
-  public ArticleAIGenerateResponse generateDraft(ArticleAIGenerateRequest request) {
-    String topic = StringUtils.hasText(request.getTopic()) ? request.getTopic().trim() : "Healthy living";
-    String category = StringUtils.hasText(request.getCategory()) ? request.getCategory().trim() : "General";
-
-    List<String> keywords = request.getSeoKeywords() != null ? request.getSeoKeywords() : List.of();
-    List<String> normalizedKeywords = new ArrayList<>(keywords.stream()
-        .filter(StringUtils::hasText)
-        .map(String::trim)
-        .toList());
-
-    String title = "Guide: " + topic + " for Everyday Health";
-    String summary = "A practical " + category.toLowerCase(Locale.ROOT)
-        + " guide with actionable steps, early warning signs, and professional-care recommendations.";
-
-    String primaryKeyword = normalizedKeywords.isEmpty() ? topic : normalizedKeywords.getFirst();
-
-    String content = "## Why " + topic + " Matters\n"
-        + "Maintaining long-term health starts with understanding risk factors and daily habits.\n\n"
-        + "## Key Daily Actions\n"
-        + "- Follow a balanced meal plan rich in fiber and lean protein.\n"
-        + "- Track core health signals weekly (heart rate, sleep, hydration).\n"
-        + "- Keep at least 150 minutes of moderate exercise each week.\n\n"
-        + "## When to Seek Medical Advice\n"
-        + "If symptoms persist or worsen, consult a qualified healthcare professional promptly.\n\n"
-        + "## FAQ\n"
-        + "### Is this enough without doctor consultation?\n"
-        + "No. This article provides educational support and does not replace medical diagnosis.";
-
-    return ArticleAIGenerateResponse.builder()
-        .title(title)
-        .summary(summary)
-        .content(content)
-        .seoKeywords(normalizedKeywords)
-        .metaTitle(title + " | HealthCareNow")
-        .metaDescription("Learn " + topic + " with evidence-based tips and clear next steps for safer outcomes.")
-        .slugSuggestion(toSlug(primaryKeyword + " " + category))
-        .build();
-  }
 
   private void fanOutNewArticleNotification(Article article) {
     String articleTitle = article.getTitle();

@@ -91,4 +91,37 @@ public class AdminUserService {
         .createdAt(user.getCreatedAt())
         .build();
   }
+
+  public UserAdminResponse changeStatus(String adminId, String userId, String status) {
+    checkAdmin(adminId);
+
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    
+    String upperStatus = status != null ? status.toUpperCase() : "ACTIVE";
+    if (!List.of("ACTIVE", "SUSPENDED", "DELETED").contains(upperStatus)) {
+        throw new RuntimeException("Invalid status");
+    }
+    
+    user.setStatus(upperStatus);
+    userRepository.save(user);
+
+    PatientProfile profile = patientProfileRepository.findByUserId(user.getId()).orElse(null);
+    return UserAdminResponse.builder()
+        .id(user.getId())
+        .email(user.getEmail())
+        .fullName(profile != null ? profile.getFullName() : "")
+        .role(user.getRole().name())
+        .status(user.getStatus())
+        .dateOfBirth(profile != null ? profile.getDateOfBirth() : null)
+        .heightCm(profile != null && profile.getHeightCm() != null 
+            ? profile.getHeightCm().doubleValue() 
+            : null)
+        .weightKg(profile != null && profile.getWeightKg() != null 
+            ? profile.getWeightKg().doubleValue() 
+            : null)
+        .avatarUrl(profile != null ? profile.getAvatarUrl() : null)
+        .createdAt(user.getCreatedAt())
+        .build();
+  }
 }
