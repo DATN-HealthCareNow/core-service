@@ -12,14 +12,17 @@ import com.healthcarenow.core.repository.mongo.PatientProfileRepository;
 import com.healthcarenow.core.repository.mongo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
   private final UserRepository userRepository;
   private final PatientProfileRepository patientProfileRepository;
   private final S3Service s3Service;
+  private final WaterIntakeService waterIntakeService;
 
   public UserProfileResponse getProfile(String userId) {
     User user = userRepository.findById(userId)
@@ -120,6 +123,14 @@ public class UserService {
 
     patientProfileRepository.save(profile);
     System.out.println("Profile saved successfully");
+
+    if (request.getWeight() != null || request.getHeight() != null) {
+      try {
+        waterIntakeService.recalculateGoal(userId);
+      } catch (Exception e) {
+        log.warn("Failed to recalculate water goal for user: {}", userId, e);
+      }
+    }
 
     return getProfile(userId);
   }
