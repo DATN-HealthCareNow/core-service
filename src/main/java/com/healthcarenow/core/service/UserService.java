@@ -50,6 +50,7 @@ public class UserService {
         .medicalHistory(profile.getMedicalHistory())
         .forbiddenFoods(profile.getRestrictedFoods() != null ? 
             profile.getRestrictedFoods().stream().map(PatientProfile.RestrictedFood::getFoodName).toList() : null)
+        .subscriptionPlan(user.getSubscriptionPlan())
         .privacySettings(profile.getPrivacySettings())
         .build();
   }
