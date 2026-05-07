@@ -30,5 +30,8 @@ public class UserProfileResponse {
   @JsonProperty("forbidden_foods")
   private java.util.List<String> forbiddenFoods;
 
+  @JsonProperty("subscription_plan")
+  private String subscriptionPlan; // FREE | PREMIUM
+
   private PatientProfile.PrivacySettings privacySettings;
 }

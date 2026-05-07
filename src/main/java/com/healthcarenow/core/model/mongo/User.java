@@ -27,6 +27,10 @@ public class User {
 
   private String deviceToken;
 
+  private String subscriptionPlan = "FREE"; // FREE | PREMIUM
+
+  private LocalDateTime subscriptionStartDate;
+
   private LocalDateTime deletedAt;
 
   @CreatedDate

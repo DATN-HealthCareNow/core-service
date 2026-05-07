@@ -16,8 +16,15 @@ public class NotificationEvent {
   // Type of event, e.g., EMERGENCY_FALL, MEDICAL_REMINDER
   private String eventType;
 
+  // Alias for eventType used by mobile app
+  private String eventId;
+
   // Target user
   private String userId;
+
+  // Notification content
+  private String title;
+  private String content;
 
   // Priority: HIGH, NORMAL, LOW
   private String priority;
