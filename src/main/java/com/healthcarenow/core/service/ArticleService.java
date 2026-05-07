@@ -129,6 +129,8 @@ public class ArticleService {
               .userId(user.getId())
               .payload(Map.of(
                   "language", "vi",
+                  "title", "Bài viết mới: " + articleTitle,
+                  "body", "Khám phá bài viết mới nhất về " + (article.getCategory() != null ? article.getCategory() : "sức khỏe") + ". Đọc ngay trên HealthCareNow!",
                   "article_title", articleTitle,
                   "article_id", articleId,
                   "article_category", article.getCategory() != null ? article.getCategory() : "General"))

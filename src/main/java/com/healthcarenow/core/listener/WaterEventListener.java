@@ -32,6 +32,10 @@ public class WaterEventListener {
             JsonNode node = objectMapper.readTree(message);
 
             JsonNode bodyNode = node.has("payload") ? node.get("payload") : node;
+            if (bodyNode.isTextual()) {
+                bodyNode = objectMapper.readTree(bodyNode.asText());
+            }
+            
             String userId = getText(bodyNode, "user_id", "userId");
             Integer amountMl = getInt(bodyNode, "amount_ml", "amountMl");
             String dateString = getText(bodyNode, "date_string", "dateString");

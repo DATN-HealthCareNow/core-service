@@ -34,21 +34,19 @@ public class WaterIntakeService {
     WaterIntake intake = getOrCreateWaterIntake(userId, date);
 
     int currentTotal = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
-    int newTotal = currentTotal + (amountMl != null ? amountMl : 0);
+    int addedAmount = amountMl != null ? amountMl : 0;
+    int newTotal = currentTotal + addedAmount;
     
     log.info("Updating water intake for user {}: {}ml + {}ml = {}ml (date: {})", 
-        userId, currentTotal, amountMl, newTotal, dateString);
+        userId, currentTotal, addedAmount, newTotal, dateString);
 
     intake.setTotalTodayMl(newTotal);
-    intake.setAmountMl(amountMl);
     intake.setTimestamp(LocalDateTime.now(BUSINESS_ZONE));
     intake.setDate(date);
 
     if (intake.getGoalMl() != null && intake.getGoalMl() > 0) {
-      double progress = (double) intake.getTotalTodayMl() / intake.getGoalMl() * 100.0;
-      progress = Math.min(progress, 100.0);
-      progress = Math.round(progress * 10.0) / 10.0;
-      intake.setProgressPercent(progress);
+      double percent = (double) newTotal / intake.getGoalMl() * 100.0;
+      intake.setProgressPercent(Math.min(100.0, Math.round(percent * 10.0) / 10.0));
     }
 
     waterIntakeRepository.save(intake);
@@ -162,6 +160,27 @@ public class WaterIntakeService {
 
   public void updateGoal(String userId, int goalMl) {
     WaterIntake intake = getTodayWaterIntake(userId);
+    intake.setGoalMl(goalMl);
+    if (goalMl > 0) {
+      int total = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
+      double progress = (double) total / goalMl * 100.0;
+      progress = Math.min(progress, 100.0);
+      progress = Math.round(progress * 10.0) / 10.0;
+      intake.setProgressPercent(progress);
+    }
+    waterIntakeRepository.save(intake);
+  }
+
+  public void recalculateGoal(String userId) {
+    WaterIntake intake = getTodayWaterIntake(userId);
+    PatientProfile profile = patientProfileRepository.findByUserId(userId).orElse(null);
+    int weightKg = (profile != null && profile.getWeightKg() != null) ? profile.getWeightKg() : 65;
+
+    double weightLbs = weightKg / 0.45359237;
+    double baseOz = weightLbs * 0.5;
+    double totalOz = baseOz; // simplified for recalculation without fetching avgExerciseMinutes again
+    int goalMl = (int) Math.round(totalOz * 29.5735296);
+
     intake.setGoalMl(goalMl);
     if (goalMl > 0) {
       int total = intake.getTotalTodayMl() != null ? intake.getTotalTodayMl() : 0;
