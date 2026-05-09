@@ -177,8 +177,8 @@ public class AuthService {
   }
 
   public AuthResponse register(AuthRequest request) {
-    if (!StringUtils.hasText(request.getEmail()) || !StringUtils.hasText(request.getOtp())) {
-      throw new BadRequestException("Email and OTP are required");
+    if (!StringUtils.hasText(request.getEmail()) || !StringUtils.hasText(request.getOtp()) || !StringUtils.hasText(request.getPassword())) {
+      throw new BadRequestException("Email, OTP and password are required");
     }
 
     String key = otpKey(OTP_REGISTER, request.getEmail());
