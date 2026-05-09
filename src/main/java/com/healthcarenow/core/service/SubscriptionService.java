@@ -43,7 +43,7 @@ public class SubscriptionService {
     private static final String PAYOS_API_URL = "https://api-merchant.payos.vn/v2/payment-requests";
 
     // ── FREE tier limits ──
-    private static final int FREE_AI_CHAT_DAILY_TOKENS = 2000;
+    private static final int FREE_AI_CHAT_DAILY_TOKENS = 10;
     private static final int FREE_AI_MEALS_DAILY = 1;
     private static final int FREE_AI_PREDICT_DAILY = 1;
     private static final int FREE_MEDICAL_SCANS_TOTAL = 1;
@@ -334,32 +334,20 @@ public class SubscriptionService {
     }
 
     private int getRedisCounter(String key) {
-        try {
-            String val = redisTemplate.opsForValue().get("sub:" + key);
-            return val != null ? Integer.parseInt(val) : 0;
-        } catch (Exception e) {
-            return 0;
-        }
+        String val = redisTemplate.opsForValue().get("sub:" + key);
+        return val != null ? Integer.parseInt(val) : 0;
     }
 
     private void incrementDailyCounter(String key, int amount) {
-        try {
-            String redisKey = "sub:" + key;
-            redisTemplate.opsForValue().increment(redisKey, amount);
-            // Set TTL to midnight (approximate: 24h from now)
-            redisTemplate.expire(redisKey, 24, TimeUnit.HOURS);
-        } catch (Exception e) {
-            log.warn("Failed to increment Redis counter: {}", key, e);
-        }
+        String redisKey = "sub:" + key;
+        redisTemplate.opsForValue().increment(redisKey, amount);
+        // Set TTL to midnight (approximate: 24h from now)
+        redisTemplate.expire(redisKey, 24, TimeUnit.HOURS);
     }
 
     private void incrementCounter(String key, int amount) {
-        try {
-            String redisKey = "sub:" + key;
-            redisTemplate.opsForValue().increment(redisKey, amount);
-        } catch (Exception e) {
-            log.warn("Failed to increment Redis counter: {}", key, e);
-        }
+        String redisKey = "sub:" + key;
+        redisTemplate.opsForValue().increment(redisKey, amount);
     }
 
     private String hmacSHA256(String key, String data) {
