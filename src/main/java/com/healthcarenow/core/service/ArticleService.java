@@ -120,15 +120,15 @@ public class ArticleService {
     String articleTitle = article.getTitle();
     String articleId = article.getId();
 
-    userRepository.findAll().stream()
-        .filter(user -> StringUtils.hasText(user.getDeviceToken()))
-        .forEach(user -> {
+    userRepository.findAll().forEach(user -> {
           NotificationEvent event = NotificationEvent.builder()
               .eventType("NEW_ARTICLE_PUBLISHED")
               .priority("NORMAL")
               .userId(user.getId())
               .payload(Map.of(
                   "language", "vi",
+                  "device_token", user.getDeviceToken() != null ? user.getDeviceToken() : "UNKNOWN_DEVICE",
+                  "email", user.getEmail() != null ? user.getEmail() : "",
                   "title", "Bài viết mới: " + articleTitle,
                   "body", "Khám phá bài viết mới nhất về " + (article.getCategory() != null ? article.getCategory() : "sức khỏe") + ". Đọc ngay trên HealthCareNow!",
                   "article_title", articleTitle,
