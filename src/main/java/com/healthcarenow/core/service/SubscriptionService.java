@@ -45,13 +45,15 @@ public class SubscriptionService {
     // ── FREE tier limits ──
     private static final int FREE_AI_CHAT_DAILY_TOKENS = 10;
     private static final int FREE_AI_MEALS_DAILY = 1;
-    private static final int FREE_AI_PREDICT_DAILY = 1;
+    private static final int FREE_AI_PREDICT_DAILY = 1;   // Pulse Scan (user-initiated)
+    private static final int FREE_AI_INSIGHTS_DAILY = 1;  // 7-day Health Insights
     private static final int FREE_MEDICAL_SCANS_TOTAL = 1;
 
     // ── PREMIUM tier limits ──
     private static final int PREMIUM_AI_CHAT_DAILY_TOKENS = 999999; // effectively unlimited
     private static final int PREMIUM_AI_MEALS_DAILY = 999;
-    private static final int PREMIUM_AI_PREDICT_DAILY = 999;
+    private static final int PREMIUM_AI_PREDICT_DAILY = 999;   // Pulse Scan
+    private static final int PREMIUM_AI_INSIGHTS_DAILY = 999;  // 7-day Health Insights
     private static final int PREMIUM_MEDICAL_SCANS_TOTAL = 999;
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -111,6 +113,13 @@ public class SubscriptionService {
                 int limit = isPremium ? PREMIUM_AI_MEALS_DAILY : FREE_AI_MEALS_DAILY;
                 if (used >= limit) return false;
                 incrementDailyCounter("ai_meals:" + userId, 1);
+                return true;
+            }
+            case "AI_INSIGHTS" -> {
+                int used = getRedisCounter("ai_insights:" + userId);
+                int limit = isPremium ? PREMIUM_AI_INSIGHTS_DAILY : FREE_AI_INSIGHTS_DAILY;
+                if (used >= limit) return false;
+                incrementDailyCounter("ai_insights:" + userId, 1);
                 return true;
             }
             case "AI_PREDICT" -> {
