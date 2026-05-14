@@ -9,7 +9,7 @@ app:
 notification:
   scheduler:
     core:
-      enabled: ${CORE_NOTIFICATION_SCHEDULER_ENABLED:false}
+      enabled: ${CORE_NOTIFICATION_SCHEDULER_ENABLED:true}
 
 spring:
   servlet:
