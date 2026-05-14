@@ -2,6 +2,8 @@ package com.healthcarenow.core.controller;
 
 import com.healthcarenow.core.dto.AuthRequest;
 import com.healthcarenow.core.dto.AuthResponse;
+import com.healthcarenow.core.dto.ChangeEmailConfirmRequest;
+import com.healthcarenow.core.dto.ChangeEmailRequest;
 import com.healthcarenow.core.dto.ChangePasswordConfirmRequest;
 import com.healthcarenow.core.dto.ChangePasswordRequest;
 import com.healthcarenow.core.dto.ForgotPasswordConfirmRequest;
@@ -72,6 +74,18 @@ public class AuthController {
         request.getCurrentPassword(),
         request.getOtp(),
         request.getNewPassword());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/change-email/request-otp")
+  public ResponseEntity<Void> requestChangeEmailOtp(@RequestBody ChangeEmailRequest request) {
+    authService.requestChangeEmailOtp(request.getCurrentEmail(), request.getNewEmail(), request.getPassword());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/change-email/confirm")
+  public ResponseEntity<Void> confirmChangeEmail(@RequestBody ChangeEmailConfirmRequest request) {
+    authService.confirmChangeEmail(request.getCurrentEmail(), request.getNewEmail(), request.getOtp());
     return ResponseEntity.ok().build();
   }
 

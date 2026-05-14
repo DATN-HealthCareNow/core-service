@@ -45,6 +45,7 @@ public class AuthService {
 
   private static final String OTP_FORGOT_PASSWORD = "FORGOT_PASSWORD";
   private static final String OTP_CHANGE_PASSWORD = "CHANGE_PASSWORD";
+  private static final String OTP_CHANGE_EMAIL = "CHANGE_EMAIL";
   private static final String OTP_REGISTER = "REGISTER";
   private static final Duration OTP_TTL = Duration.ofMinutes(10);
 
@@ -146,6 +147,69 @@ public class AuthService {
     }
 
     user.setPasswordHash(passwordEncoder.encode(newPassword.trim()));
+    userRepository.save(user);
+    redisTemplate.delete(key);
+  }
+
+  public void requestChangeEmailOtp(String currentEmail, String newEmail, String password) {
+    if (!StringUtils.hasText(currentEmail) || !StringUtils.hasText(newEmail)) {
+      throw new BadRequestException("Current and new email are required");
+    }
+
+    User user = userRepository.findByEmail(currentEmail.trim())
+        .orElseThrow(() -> new UnauthorizedException("User not found"));
+
+    // If password is provided, verify it (for password-based accounts)
+    if (StringUtils.hasText(password)) {
+      if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+        throw new UnauthorizedException("Invalid password");
+      }
+    }
+
+    if (userRepository.existsByEmail(newEmail.trim())) {
+      throw new BadRequestException("New email already in use");
+    }
+
+    String otp = generateOtpCode();
+    redisTemplate.opsForValue().set(otpKey(OTP_CHANGE_EMAIL, newEmail), otp, OTP_TTL);
+
+    // Send OTP to the NEW email address
+    NotificationEvent event = NotificationEvent.builder()
+        .eventType("CHANGE_EMAIL_OTP")
+        .userId(user.getId())
+        .priority("HIGH")
+        .payload(Map.of(
+            "email", newEmail.trim(),
+            "language", "vi",
+            "otp_code", otp,
+            "otp_expiry_minutes", String.valueOf(OTP_TTL.toMinutes()),
+            "purpose", "thay đổi email đăng nhập"))
+        .build();
+
+    notificationProducer.sendNotification(event);
+  }
+
+  public void confirmChangeEmail(String currentEmail, String newEmail, String otp) {
+    if (!StringUtils.hasText(currentEmail) || !StringUtils.hasText(newEmail) || !StringUtils.hasText(otp)) {
+      throw new BadRequestException("Current email, new email and OTP are required");
+    }
+
+    User user = userRepository.findByEmail(currentEmail.trim())
+        .orElseThrow(() -> new UnauthorizedException("User not found"));
+
+    String key = otpKey(OTP_CHANGE_EMAIL, newEmail);
+    Object storedOtpObj = redisTemplate.opsForValue().get(key);
+    String storedOtp = storedOtpObj == null ? null : String.valueOf(storedOtpObj);
+
+    if (!StringUtils.hasText(storedOtp) || !storedOtp.equals(otp.trim())) {
+      throw new BadRequestException("Invalid OTP");
+    }
+
+    if (userRepository.existsByEmail(newEmail.trim())) {
+      throw new BadRequestException("New email already in use");
+    }
+
+    user.setEmail(newEmail.trim());
     userRepository.save(user);
     redisTemplate.delete(key);
   }
