@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
@@ -66,9 +67,10 @@ public class SubscriptionService {
 
         boolean isPremium = "PREMIUM".equalsIgnoreCase(user.getSubscriptionPlan());
 
-        int chatTokensUsed = getRedisCounter("ai_chat_tokens:" + userId);
-        int mealsUsed = getRedisCounter("ai_meals:" + userId);
-        int predictUsed = getRedisCounter("ai_predict:" + userId);
+        int chatTokensUsed = getRedisCounter(getDailyKey("ai_chat_tokens", userId));
+        int mealsUsed = getRedisCounter(getDailyKey("ai_meals", userId));
+        int predictUsed = getRedisCounter(getDailyKey("ai_predict", userId));
+        int insightsUsed = getRedisCounter(getDailyKey("ai_insights", userId));
         int scansTotal = getRedisCounter("medical_scans_total:" + userId);
 
         return SubscriptionStatusResponse.builder()
@@ -81,6 +83,8 @@ public class SubscriptionService {
                 .aiMealsDailyLimit(isPremium ? PREMIUM_AI_MEALS_DAILY : FREE_AI_MEALS_DAILY)
                 .aiPredictUsedToday(predictUsed)
                 .aiPredictDailyLimit(isPremium ? PREMIUM_AI_PREDICT_DAILY : FREE_AI_PREDICT_DAILY)
+                .aiInsightsUsedToday(insightsUsed)
+                .aiInsightsDailyLimit(isPremium ? PREMIUM_AI_INSIGHTS_DAILY : FREE_AI_INSIGHTS_DAILY)
                 .medicalScansTotal(scansTotal)
                 .medicalScansLimit(isPremium ? PREMIUM_MEDICAL_SCANS_TOTAL : FREE_MEDICAL_SCANS_TOTAL)
                 .build();
@@ -102,31 +106,35 @@ public class SubscriptionService {
 
         switch (featureType) {
             case "AI_CHAT_TOKEN" -> {
-                int used = getRedisCounter("ai_chat_tokens:" + userId);
+                String key = getDailyKey("ai_chat_tokens", userId);
+                int used = getRedisCounter(key);
                 int limit = isPremium ? PREMIUM_AI_CHAT_DAILY_TOKENS : FREE_AI_CHAT_DAILY_TOKENS;
                 if (used >= limit) return false;
-                incrementDailyCounter("ai_chat_tokens:" + userId, 1);
+                incrementDailyCounter(key, 1);
                 return true;
             }
             case "AI_MEALS" -> {
-                int used = getRedisCounter("ai_meals:" + userId);
+                String key = getDailyKey("ai_meals", userId);
+                int used = getRedisCounter(key);
                 int limit = isPremium ? PREMIUM_AI_MEALS_DAILY : FREE_AI_MEALS_DAILY;
                 if (used >= limit) return false;
-                incrementDailyCounter("ai_meals:" + userId, 1);
+                incrementDailyCounter(key, 1);
                 return true;
             }
             case "AI_INSIGHTS" -> {
-                int used = getRedisCounter("ai_insights:" + userId);
+                String key = getDailyKey("ai_insights", userId);
+                int used = getRedisCounter(key);
                 int limit = isPremium ? PREMIUM_AI_INSIGHTS_DAILY : FREE_AI_INSIGHTS_DAILY;
                 if (used >= limit) return false;
-                incrementDailyCounter("ai_insights:" + userId, 1);
+                incrementDailyCounter(key, 1);
                 return true;
             }
             case "AI_PREDICT" -> {
-                int used = getRedisCounter("ai_predict:" + userId);
+                String key = getDailyKey("ai_predict", userId);
+                int used = getRedisCounter(key);
                 int limit = isPremium ? PREMIUM_AI_PREDICT_DAILY : FREE_AI_PREDICT_DAILY;
                 if (used >= limit) return false;
-                incrementDailyCounter("ai_predict:" + userId, 1);
+                incrementDailyCounter(key, 1);
                 return true;
             }
             case "MEDICAL_SCAN" -> {
@@ -342,6 +350,10 @@ public class SubscriptionService {
         }
     }
 
+    private String getDailyKey(String feature, String userId) {
+        return feature + ":" + userId + ":" + LocalDate.now();
+    }
+
     private int getRedisCounter(String key) {
         String val = redisTemplate.opsForValue().get("sub:" + key);
         return val != null ? Integer.parseInt(val) : 0;
@@ -350,8 +362,8 @@ public class SubscriptionService {
     private void incrementDailyCounter(String key, int amount) {
         String redisKey = "sub:" + key;
         redisTemplate.opsForValue().increment(redisKey, amount);
-        // Set TTL to midnight (approximate: 24h from now)
-        redisTemplate.expire(redisKey, 24, TimeUnit.HOURS);
+        // Set TTL to 48 hours for date-suffixed keys (long enough to survive the day)
+        redisTemplate.expire(redisKey, 48, TimeUnit.HOURS);
     }
 
     private void incrementCounter(String key, int amount) {

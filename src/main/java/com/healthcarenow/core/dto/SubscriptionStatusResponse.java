@@ -36,6 +36,12 @@ public class SubscriptionStatusResponse {
     @JsonProperty("ai_predict_daily_limit")
     private int aiPredictDailyLimit;
 
+    @JsonProperty("ai_insights_used_today")
+    private int aiInsightsUsedToday;
+
+    @JsonProperty("ai_insights_daily_limit")
+    private int aiInsightsDailyLimit;
+
     @JsonProperty("medical_scans_total")
     private int medicalScansTotal;
 
