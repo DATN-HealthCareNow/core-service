@@ -288,6 +288,10 @@ public class AuthService {
     User user = userRepository.findByEmail(request.getEmail())
         .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
 
+    if ("DELETED".equals(user.getStatus())) {
+      throw new UnauthorizedException("Tài khoản của bạn đã bị xóa");
+    }
+
     if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
       throw new UnauthorizedException("Invalid credentials");
     }
@@ -310,6 +314,9 @@ public class AuthService {
           }
 
           User user = userRepository.findByEmail(email).orElse(null);
+          if (user != null && "DELETED".equals(user.getStatus())) {
+              throw new UnauthorizedException("Tài khoản của bạn đã bị xóa");
+          }
           if (user == null) {
               user = new User();
               user.setId(IdUtils.generateId());

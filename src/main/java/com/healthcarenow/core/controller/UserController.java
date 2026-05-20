@@ -52,4 +52,10 @@ public class UserController {
     userService.updateTracking(userId, request);
     return ResponseEntity.ok().build();
   }
+
+  @DeleteMapping("/account")
+  public ResponseEntity<Void> deleteAccount(@AuthenticationPrincipal String userId) {
+    userService.deleteAccount(userId);
+    return ResponseEntity.ok().build();
+  }
 }

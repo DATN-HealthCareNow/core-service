@@ -224,4 +224,14 @@ public class UserService {
         }
     });
   }
+
+  public void deleteAccount(String userId) {
+    userRepository.findById(userId).ifPresent(user -> {
+        user.setStatus("DELETED");
+        user.setDeletedAt(java.time.LocalDateTime.now());
+        user.setDeviceToken(null);
+        userRepository.save(user);
+        System.out.println("User soft deleted: " + userId);
+    });
+  }
 }
