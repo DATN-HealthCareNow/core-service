@@ -53,7 +53,22 @@ public class WaterIntakeService {
   }
 
   public WaterIntake getTodayWaterIntake(String userId) {
-    return getOrCreateWaterIntake(userId, getBusinessToday());
+    WaterIntake intake = getOrCreateWaterIntake(userId, getBusinessToday());
+    try {
+      int iotTotal = fetchTodayWaterFromIotService(userId);
+      if (intake.getTotalTodayMl() == null || intake.getTotalTodayMl() != iotTotal) {
+        intake.setTotalTodayMl(iotTotal);
+        if (intake.getGoalMl() != null && intake.getGoalMl() > 0) {
+          double percent = (double) iotTotal / intake.getGoalMl() * 100.0;
+          intake.setProgressPercent(Math.min(100.0, Math.round(percent * 10.0) / 10.0));
+        }
+        waterIntakeRepository.save(intake);
+        log.info("Synchronized water intake for user {} with iot-service: {}ml", userId, iotTotal);
+      }
+    } catch (Exception e) {
+      log.error("Failed to sync water intake with iot-service for user {}", userId, e);
+    }
+    return intake;
   }
 
   public WaterIntake findTodayWaterIntake(String userId) {
@@ -190,5 +205,28 @@ public class WaterIntakeService {
       intake.setProgressPercent(progress);
     }
     waterIntakeRepository.save(intake);
+  }
+
+  private int fetchTodayWaterFromIotService(String userId) {
+    try {
+      RestTemplate restTemplate = new RestTemplate();
+      HttpHeaders headers = new HttpHeaders();
+      headers.set("X-Internal-Token", "hcn-internal-secret-2024");
+      HttpEntity<String> entity = new HttpEntity<>(headers);
+
+      ResponseEntity<Integer> response = restTemplate.exchange(
+          "http://iot-service:8082/api/v1/internal/water-metrics/" + userId + "/today-total",
+          HttpMethod.GET,
+          entity,
+          Integer.class
+      );
+
+      if (response.getBody() != null) {
+        return response.getBody();
+      }
+    } catch (Exception e) {
+      log.error("Failed to fetch today's total water from iot-service for userId: {}", userId, e);
+    }
+    return 0;
   }
 }
